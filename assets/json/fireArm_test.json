@@ -1,0 +1,15 @@
+{"fireArms":[{
+    "make": "American Rifle Company",
+    "model": "Nucleous",
+    "caliber": "6.5 Creedmoor",
+    "serialNumber": "XXXX420",
+    "notes": []
+}, {
+    "make": "Remington",
+    "model": "700 PSS",
+    "caliber": ".308 Winchester",
+    "serialNumber": "XXXX6969",
+    "notes": []
+}] 
+    
+}

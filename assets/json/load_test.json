@@ -1,0 +1,16 @@
+{"loads": [{
+            "caliber": "6.5 Creedmoor",
+            "bulletWeight": "147.0",
+            "bulletManufacture": "Hornady",
+            "bulletName": "ELD-M",
+            "powderWeight": "41.5",
+            "powderType": "H4150",
+            "brassManufacture": "Hornady",
+            "numOfFirings": "2",
+            "primerManufacture": "Wolf",
+            "primerName": "Long Rifle",
+            "fireArms": [],
+            "notes": []
+        }
+]
+}
