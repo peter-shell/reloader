@@ -19,10 +19,15 @@ void main() {
       standDeviation: 0);
   myShots.forEach((shot) => {
         mygroup.add(shot),
-        print("Average Velocity: ${mygroup.avgVelocity}"),
-        print("Standard Deviation: ${mygroup.standDeviation}"),
-        print("Extreme Spread ${mygroup.extremeSpread}"),
-        print("Max Velocity: ${mygroup.maxVelocity}"),
-        print("Min Velocity: ${mygroup.minVelocity}"),
+        // print("Average Velocity: ${mygroup.avgVelocity}"),
+        // print("Standard Deviation: ${mygroup.standDeviation}"),
+        // print("Extreme Spread ${mygroup.extremeSpread}"),
+        // print("Max Velocity: ${mygroup.maxVelocity}"),
+        // print("Min Velocity: ${mygroup.minVelocity}"),
       });
+  test("All shot objects were added", () => {expect(mygroup.shots.length, 6)});
+  test("first shot is correct speed",
+      () => {expect(mygroup.shots[0].velocity, 2700.0)});
+  test("test setting ctcSize",
+      () => {mygroup.ctcGroupSize = .89, expect(mygroup.ctcGroupSize, .89)});
 }
