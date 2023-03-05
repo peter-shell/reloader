@@ -6,7 +6,7 @@ class VarGroupLinker {
   VarGroupLinker({required this.chargeWeight, required this.group});
   factory VarGroupLinker.fromJson(Map<String, dynamic> data) {
     final chargeWeight = data['chargeWeight'];
-    final group = data['group'];
+    final group = Group.fromJson(data['group']);
     return VarGroupLinker(chargeWeight: chargeWeight, group: group);
   }
   Map<String, dynamic> toJson() =>
