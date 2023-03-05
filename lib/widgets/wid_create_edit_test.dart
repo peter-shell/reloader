@@ -21,6 +21,19 @@ class TestForm extends StatefulWidget {
   int index;
   String titleString;
   bool arrow;
+  String? dropDownValue;
+  bool isButtonDiasabled = true;
+  double numVariations = 0.0;
+  double chargeWeightJump = 0.0;
+
+  List<DropdownMenuItem<String>> testMenuItems = [
+    const DropdownMenuItem(
+        value: "Select A Test", child: Text("Select A Test")),
+    const DropdownMenuItem(
+        value: "Charge Weight", child: Text("Charge Weight")),
+    const DropdownMenuItem(
+        value: "Seating Depth", child: Text("Seating Depth")),
+  ];
 
   @override
   State<TestForm> createState() => _TestFormState();
@@ -37,15 +50,30 @@ class _TestFormState extends State<TestForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(value: "select", child: Text("select a test")),
-      const DropdownMenuItem(
-          value: "charge weight", child: Text("Charge Weigh")),
-      const DropdownMenuItem(
-          value: "seating depth", child: Text("Seating Depth")),
-    ];
+  void initState() {
+    widget.dropDownValue = widget.testMenuItems.first.value!;
+    super.initState();
+  }
 
+  Function addGroup() {
+    return () {};
+  }
+
+  Widget newGroupWidget(IncrementVarTest test) {
+    // creates empty cha
+    return Card(
+      child: Column(
+        children: [
+          Row(
+            children: [],
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.titleString),
@@ -68,25 +96,63 @@ class _TestFormState extends State<TestForm> {
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
+                          Row(children: [
+                            DropdownButton<String>(
+                              value: widget.dropDownValue,
+                              items: widget.testMenuItems,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  widget.dropDownValue = newValue!;
+                                  widget.emptyTest.testType = newValue;
+                                });
+                              },
+                            ),
+                          ]),
                           Row(
                             children: [
-                              DropdownButton(
-                                value: widget.emptyTest.testType,
-                                items: menuItems,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    widget.emptyTest.testType = newValue!;
-                                  });
-                                },
+                              Expanded(
+                                child: TextFormField(
+                                  initialValue: "",
+                                  decoration: InputDecoration(
+                                      hintText: "Ex: 5",
+                                      labelText:
+                                          "Enter Number Of ${widget.emptyTest.testType} Variations"),
+                                  onChanged: (value) {
+                                    widget.numVariations = double.parse(value);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                    initialValue: "",
+                                    decoration: InputDecoration(
+                                        hintText: "Ex: .2",
+                                        labelText:
+                                            "Enter Jump In ${widget.emptyTest.testType}"),
+                                    onChanged: (value) {
+                                      widget.chargeWeightJump =
+                                          double.parse(value);
+                                      if (value.length > 1) {
+                                        widget.isButtonDiasabled = false;
+                                        setState(() {});
+                                      } else {
+                                        widget.isButtonDiasabled = true;
+                                      }
+                                    }),
                               )
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
                     ElevatedButton(
                       // TODO: fix button width, it's too big right now
-                      onPressed: () {},
+                      onPressed: widget.isButtonDiasabled ? null : addGroup,
+
                       // pass firearms, loads, bullet to next screen
 
                       // TODO: need to add function to package for cloud here
@@ -95,7 +161,7 @@ class _TestFormState extends State<TestForm> {
                       // formKey.currentState.validate();
                       style: ElevatedButton.styleFrom(
                           shape: const StadiumBorder()),
-                      child: const Text('Next'),
+                      child: const Text('Create'),
                     )
                   ],
                 )),

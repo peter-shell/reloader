@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:measure_group/classes/class_brass.dart';
+import 'package:measure_group/classes/class_inc_var_test.dart';
 import 'package:measure_group/classes/class_note.dart';
 import 'package:measure_group/classes/class_powder.dart';
 import 'package:measure_group/classes/class_primer.dart';
@@ -8,6 +9,7 @@ import 'package:measure_group/module/mod_save_json.dart' as save_json;
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
 import 'package:measure_group/classes/class_bullet.dart';
+import 'package:measure_group/widgets/wid_create_edit_test.dart';
 import 'package:measure_group/widgets/wid_note_form.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -299,6 +301,33 @@ class _LoadDetailState extends State<LoadDetail> {
       ]),
     );
 
+    Widget testView = Card(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TestForm(
+                                    loadObjects: widget.loadObjects,
+                                    fireArmObjects: widget.fireArmObjects,
+                                    emptyTest: IncrementVarTest(
+                                        varGroupList: [], smallestGroup: 0.0),
+                                    index: widget.index,
+                                    titleString: "Create Test",
+                                    arrow: false)))
+                        .then((value) => setState(() {}));
+                  },
+                  child: const Text("Add Test"))
+            ],
+          )
+        ],
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.loadObjects[widget.index].bullet.bulletCaliber)),
@@ -308,7 +337,8 @@ class _LoadDetailState extends State<LoadDetail> {
           powderInfo,
           brassInfo,
           primerInfo,
-          cartridgeInfo
+          cartridgeInfo,
+          testView,
         ]),
       ),
     );
