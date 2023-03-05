@@ -28,6 +28,8 @@ class LoadDetail extends StatefulWidget {
 class _LoadDetailState extends State<LoadDetail> {
   @override
   Widget build(BuildContext context) {
+    // setting to variables so I don't have to type all this out everytime
+    // I reference .bullet.weight, etc..
     Bullet bullet = widget.loadObjects[widget.index].bullet;
     Powder powder = widget.loadObjects[widget.index].powder;
     Brass brass = widget.loadObjects[widget.index].brass;
