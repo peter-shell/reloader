@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
 import 'package:measure_group/classes/class_inc_var_test.dart';
-import 'package:measure_group/widgets/wid_powder_form.dart';
 
 // serves as the create and edit screens for building/editing a cartridge
 // bullet_form -> powder_form -> brass_form -> primer_form -> cartridge_form

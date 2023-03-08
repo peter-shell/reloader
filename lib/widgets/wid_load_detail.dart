@@ -9,7 +9,7 @@ import 'package:measure_group/module/mod_save_json.dart' as save_json;
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
 import 'package:measure_group/classes/class_bullet.dart';
-import 'package:measure_group/widgets/wid_create_edit_test.dart';
+import 'package:measure_group/widgets/wid_create_test.dart';
 import 'package:measure_group/widgets/wid_note_form.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
