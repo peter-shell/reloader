@@ -13,7 +13,7 @@ class Group {
   double maxVelocity;
   double standDeviation;
   double extremeSpread;
-  double numShots;
+  int numShots;
   Group(
       {required this.shots,
       required this.ctcGroupSize,
@@ -36,7 +36,7 @@ class Group {
     final maxVelocity = double.parse(data['maxVelocity'] ?? "0.0");
     final standDeviation = double.parse(data['standDeviation'] ?? "0.0");
     final extremeSpread = double.parse(data['extremeSpread'] ?? "0.0");
-    final numShots = double.parse(data['numShots'] ?? "0.0");
+    final numShots = int.parse(data['numShots'] ?? "0");
     return Group(
         shots: tempshots,
         ctcGroupSize: ctcGroupSize,

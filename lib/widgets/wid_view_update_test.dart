@@ -5,6 +5,16 @@ import 'package:measure_group/classes/class_inc_var_test.dart';
 
 // serves as the create and edit screens for building/editing a cartridge
 // bullet_form -> powder_form -> brass_form -> primer_form -> cartridge_form
+// going to dynamically create widgets that represent tested variable and
+// the corresponding shot group.
+// Input: loadObjects and fireArmObjects are complete lists of the users
+// cartridges and firearms. emptyTest is a shell object for collecting all the
+// tested variables and shot groups. The previous screen needs to create those
+// variable/shot groups (empty) and insert them into emptyTest. index of loadobjects so we know
+// which cartridge we are messing with. titleString is SE. disabledBackArrow so
+// we can force the user to move through the entire screen; use create screen for
+// updates.
+
 class TestViewUpdateForm extends StatefulWidget {
   TestViewUpdateForm(
       {super.key,
@@ -20,10 +30,8 @@ class TestViewUpdateForm extends StatefulWidget {
   int index;
   String titleString;
   bool disableBackArrow;
-  String? dropDownValue;
+  //String? dropDownValue;
   bool isButtonDiasabled = true;
-  double numVariations = 0.0;
-  double chargeWeightJump = 0.0;
 
   @override
   State<TestViewUpdateForm> createState() => _TestViewUpdateFormState();
@@ -39,20 +47,14 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
     super.dispose();
   }
 
-  Function addGroup() {
-    return () {};
-  }
-
   Widget listBuilder(IncrementVarTest test) {
-    return Container(
-      child: Expanded(
-        child: ListView.builder(
-            itemCount: widget.emptyTest.chargesAndGroups!.length,
-            itemBuilder: (context, index) {
-              return newGroupWidget(widget.emptyTest, index);
-            }),
-      ),
-    );
+    return ListView.builder(
+        itemCount: widget.emptyTest.varGroupList.length,
+        scrollDirection: Axis.vertical,
+        //shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return newGroupWidget(widget.emptyTest, index);
+        });
   }
 
   Widget newGroupWidget(IncrementVarTest test, int index) {
@@ -60,111 +62,143 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
     return Card(
       child: Column(
         children: [
-          Row(
-            children: [
-              TextFormField(
-                initialValue: test.varGroupList[index].chargeWeight.toString(),
-                decoration: const InputDecoration(
-                    //hintText: "Ex: 2.2",
-                    labelText: "Charge Weight"),
-                onChanged: (value) {
-                  // TODO: validation on string to double
-                  test.varGroupList[index].chargeWeight = double.parse(value);
-                },
-              ),
-              TextFormField(
-                initialValue:
-                    test.varGroupList[index].group.ctcGroupSize.toString(),
-                decoration: const InputDecoration(
-                    //hintText: "Ex: 2.2",
-                    labelText: "Group Size"),
-                onChanged: (value) {
-                  // TODO: validation on string to double
-                  test.varGroupList[index].group.ctcGroupSize =
-                      double.parse(value);
-                },
-              ),
-              TextFormField(
-                initialValue:
-                    test.varGroupList[index].group.numShots.toString(),
-                decoration: const InputDecoration(
-                    //hintText: "Ex: 2.2",
-                    labelText: "Group Size"),
-                onChanged: (value) {
-                  // TODO: validation on string to double
-                  test.varGroupList[index].group.numShots = double.parse(value);
-                },
-              ),
-            ],
+          ListTile(
+            title: Text("Group ${index + 1}"),
+            trailing: const IconButton(
+              icon: Icon(Icons.more_vert),
+              onPressed: null,
+            ),
           ),
-          Row(
-            children: [
-              TextFormField(
-                initialValue:
-                    test.varGroupList[index].group.avgVelocity.toString(),
-                decoration: const InputDecoration(
-                    //hintText: "Ex: 2.2",
-                    labelText: "Average Velocity"),
-                onChanged: (value) {
-                  // TODO: validation on string to double
-                  test.varGroupList[index].group.avgVelocity =
-                      double.parse(value);
-                },
-              ),
-              TextFormField(
-                initialValue:
-                    test.varGroupList[index].group.minVelocity.toString(),
-                decoration: const InputDecoration(
-                    //hintText: "Ex: 2.2",
-                    labelText: "Average Velocity"),
-                onChanged: (value) {
-                  // TODO: validation on string to double
-                  test.varGroupList[index].group.minVelocity =
-                      double.parse(value);
-                },
-              ),
-              TextFormField(
-                initialValue:
-                    test.varGroupList[index].group.maxVelocity.toString(),
-                decoration: const InputDecoration(
-                    //hintText: "Ex: 2.2",
-                    labelText: "Average Velocity"),
-                onChanged: (value) {
-                  // TODO: validation on string to double
-                  test.varGroupList[index].group.maxVelocity =
-                      double.parse(value);
-                },
-              )
-            ],
+          ListTile(
+            subtitle: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    initialValue:
+                        test.varGroupList[index].chargeWeight.toString(),
+                    decoration: const InputDecoration(
+                        //hintText: "Ex: 2.2",
+                        labelText: "Charge Weight"),
+                    onChanged: (value) {
+                      // TODO: validation on string to double
+                      test.varGroupList[index].chargeWeight =
+                          double.parse(value);
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    initialValue:
+                        test.varGroupList[index].group.ctcGroupSize.toString(),
+                    decoration: const InputDecoration(
+                        //hintText: "Ex: 2.2",
+                        labelText: "Group Size"),
+                    onChanged: (value) {
+                      // TODO: validation on string to double
+                      test.varGroupList[index].group.ctcGroupSize =
+                          double.parse(value);
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    initialValue:
+                        test.varGroupList[index].group.numShots.toString(),
+                    decoration: const InputDecoration(
+                        //hintText: "Ex: 2.2",
+                        labelText: "Number Of Shots"),
+                    onChanged: (value) {
+                      // TODO: validation on string to double
+                      test.varGroupList[index].group.numShots =
+                          int.parse(value);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
-          Row(
-            children: [
-              TextFormField(
-                initialValue:
-                    test.varGroupList[index].group.standDeviation.toString(),
-                decoration: const InputDecoration(
-                    //hintText: "Ex: 2.2",
-                    labelText: "Average Velocity"),
-                onChanged: (value) {
-                  // TODO: validation on string to double
-                  test.varGroupList[index].group.standDeviation =
-                      double.parse(value);
-                },
-              ),
-              TextFormField(
-                initialValue:
-                    test.varGroupList[index].group.extremeSpread.toString(),
-                decoration: const InputDecoration(
-                    //hintText: "Ex: 2.2",
-                    labelText: "Average Velocity"),
-                onChanged: (value) {
-                  // TODO: validation on string to double
-                  test.varGroupList[index].group.extremeSpread =
-                      double.parse(value);
-                },
-              )
-            ],
-          )
+          ListTile(
+            subtitle: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    initialValue:
+                        test.varGroupList[index].group.avgVelocity.toString(),
+                    decoration: const InputDecoration(
+                        //hintText: "Ex: 2.2",
+                        labelText: "Average Velocity"),
+                    onChanged: (value) {
+                      // TODO: validation on string to double
+                      test.varGroupList[index].group.avgVelocity =
+                          double.parse(value);
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    initialValue:
+                        test.varGroupList[index].group.minVelocity.toString(),
+                    decoration: const InputDecoration(
+                        //hintText: "Ex: 2.2",
+                        labelText: "Minimum Velocity"),
+                    onChanged: (value) {
+                      // TODO: validation on string to double
+                      test.varGroupList[index].group.minVelocity =
+                          double.parse(value);
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    initialValue:
+                        test.varGroupList[index].group.maxVelocity.toString(),
+                    decoration: const InputDecoration(
+                        //hintText: "Ex: 2.2",
+                        labelText: "Maximum Velocity"),
+                    onChanged: (value) {
+                      // TODO: validation on string to double
+                      test.varGroupList[index].group.maxVelocity =
+                          double.parse(value);
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+          ListTile(
+            subtitle: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    initialValue: test.varGroupList[index].group.standDeviation
+                        .toString(),
+                    decoration: const InputDecoration(
+                        //hintText: "Ex: 2.2",
+                        labelText: "Standard Deviation"),
+                    onChanged: (value) {
+                      // TODO: validation on string to double
+                      test.varGroupList[index].group.standDeviation =
+                          double.parse(value);
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    initialValue:
+                        test.varGroupList[index].group.extremeSpread.toString(),
+                    decoration: const InputDecoration(
+                        //hintText: "Ex: 2.2",
+                        labelText: "Extreme Spread"),
+                    onChanged: (value) {
+                      // TODO: validation on string to double
+                      test.varGroupList[index].group.extremeSpread =
+                          double.parse(value);
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -178,25 +212,27 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
           automaticallyImplyLeading: widget.disableBackArrow,
         ),
         body: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(5),
             child: Form(
-              key: formKey,
-              child: ListView(children: [
-                Card(
-                    child: Column(
-                  children: [
-                    listBuilder(widget.emptyTest),
-                    ElevatedButton(
-                      // TODO: fix button width, it's too big right now
-                      onPressed: widget.isButtonDiasabled ? null : addGroup,
+                key: formKey,
+                child: Card(
+                  child: Column(
+                    children: [
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: listBuilder(widget.emptyTest),
+                      )),
+                      ElevatedButton(
+                        // TODO: fix button width, it's too big right now
+                        onPressed: widget.isButtonDiasabled ? null : null,
 
-                      style: ElevatedButton.styleFrom(
-                          shape: const StadiumBorder()),
-                      child: const Text('Finish'),
-                    )
-                  ],
-                )),
-              ]),
-            )));
+                        style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder()),
+                        child: const Text('Finish'),
+                      ),
+                    ],
+                  ),
+                ))));
   }
 }
