@@ -47,6 +47,25 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
     super.dispose();
   }
 
+  Future bottomSheet() {
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo),
+                title: const Text('Measure Group'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   Widget listBuilder(IncrementVarTest test) {
     return ListView.builder(
         itemCount: widget.emptyTest.varGroupList.length,
@@ -64,9 +83,11 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
         children: [
           ListTile(
             title: Text("Group ${index + 1}"),
-            trailing: const IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: null,
+            trailing: IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: () {
+                bottomSheet();
+              },
             ),
           ),
           ListTile(
