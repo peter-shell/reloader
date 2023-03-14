@@ -7,9 +7,14 @@ import 'package:measure_group/widgets/wid_display_picture_test.dart';
 // broke this widget when I removed it from main.dart. Unsure why but I'm
 // pausing to work on another portion of the app
 
-class TestGroupMeasurer extends StatelessWidget {
+class TestGroupMeasurer extends StatefulWidget {
   const TestGroupMeasurer({super.key});
 
+  @override
+  State<TestGroupMeasurer> createState() => _TestGroupMeasurerState();
+}
+
+class _TestGroupMeasurerState extends State<TestGroupMeasurer> {
   @override
   Widget build(BuildContext context) {
     return Center(

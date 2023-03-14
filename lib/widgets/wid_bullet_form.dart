@@ -4,6 +4,8 @@ import 'package:measure_group/classes/class_firearms.dart';
 import 'package:measure_group/widgets/wid_powder_form.dart';
 import 'package:measure_group/module/mod_pref_bot.dart' as pref;
 
+// serves as the create and edit screens for building/editing a cartridge
+// bullet_form -> powder_form -> brass_form -> primer_form -> cartridge_form
 class BulletForm extends StatefulWidget {
   BulletForm(
       {super.key,

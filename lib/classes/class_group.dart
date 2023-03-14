@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'class_shot.dart';
 
+//TODO: add some built in checking for shots added to list;
+// if that's the case, need to increment shot count
+
 class Group {
   List<Shot> shots = [];
   double ctcGroupSize;
@@ -10,6 +13,7 @@ class Group {
   double maxVelocity;
   double standDeviation;
   double extremeSpread;
+  int numShots;
   Group(
       {required this.shots,
       required this.ctcGroupSize,
@@ -17,7 +21,8 @@ class Group {
       required this.extremeSpread,
       required this.maxVelocity,
       required this.minVelocity,
-      required this.standDeviation});
+      required this.standDeviation,
+      required this.numShots});
   factory Group.fromJson(Map<String, dynamic> data) {
     final List<Shot> tempshots = [];
     if (data['shots'] != null) {
@@ -31,6 +36,7 @@ class Group {
     final maxVelocity = double.parse(data['maxVelocity'] ?? "0.0");
     final standDeviation = double.parse(data['standDeviation'] ?? "0.0");
     final extremeSpread = double.parse(data['extremeSpread'] ?? "0.0");
+    final numShots = int.parse(data['numShots'] ?? "0");
     return Group(
         shots: tempshots,
         ctcGroupSize: ctcGroupSize,
@@ -38,7 +44,8 @@ class Group {
         minVelocity: minVelocity,
         maxVelocity: maxVelocity,
         standDeviation: standDeviation,
-        extremeSpread: extremeSpread);
+        extremeSpread: extremeSpread,
+        numShots: numShots);
   }
   Map<String, dynamic> toJson() => {
         "shots": shots == []
@@ -49,7 +56,8 @@ class Group {
         "minVelocity": minVelocity.toString(),
         "maxVelocity": maxVelocity.toString(),
         "standDeviation": standDeviation.toString(),
-        "extremeSpread": extremeSpread.toString()
+        "extremeSpread": extremeSpread.toString(),
+        "numShots": numShots.toString()
       };
   void calculateVelocityStuff() {
     double count = 0.0;
