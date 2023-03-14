@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'dart:io';
 
 // A widget that displays the picture taken by the user.
 class DisplayPictureScreenTest extends StatefulWidget {
@@ -11,8 +10,6 @@ class DisplayPictureScreenTest extends StatefulWidget {
   State<DisplayPictureScreenTest> createState() =>
       _DisplayPictureScreenTestState();
 }
-
-final controller = TransformationController();
 
 @override
 void initState() {
@@ -27,8 +24,30 @@ void dispose() {
   dispose();
 }
 
+// input: 0 for top, 1 for left
+// output: returns top or left position as double
+double getcoordinates(int position) {
+  // convert icon.global positions to image.local positons
+  // image local to global
+  // set green icon to global
+  RenderBox imageBox = imageKey.currentContext?.findRenderObject() as RenderBox;
+  RenderBox iconBox = iconKey.currentContext?.findRenderObject() as RenderBox;
+  Offset iconPositions = iconBox.localToGlobal(Offset.zero);
+  Offset globalToLocalImage = imageBox.globalToLocal(iconPositions);
+  if (position == 0) {
+    return globalToLocalImage.dy;
+  }
+  if (position == 1) {
+    return globalToLocalImage.dx;
+  } else {
+    return 0;
+  }
+}
+
 var myStack = <Widget>[]; // used to dynamically insert widgets into stack
-GlobalKey key = GlobalKey();
+GlobalKey imageKey = GlobalKey(); // tied to group image in stack
+GlobalKey iconKey = GlobalKey(); // tied to pink aiming icon
+final controller = TransformationController();
 
 class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
   @override
@@ -37,7 +56,7 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
       Image.asset(
         // change .asset to .file for async loading
         widget.imagePath,
-        key: key,
+        //key: key,
       ),
     ];
     super.initState();
@@ -57,19 +76,22 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
           child: Stack(children: [
             InteractiveViewer(
               maxScale: 2,
-              minScale: .1,
+              minScale: .5,
               constrained: true,
               boundaryMargin: const EdgeInsets.all(double.infinity),
               transformationController: controller,
               onInteractionEnd: (details) {
                 viewerScale = controller.value.getMaxScaleOnAxis();
               },
+
               child: Stack(
+                  key: imageKey,
                   children: myStack), // myStack initially contains Image Widget
             ),
-            const Align(
-                alignment: Alignment(0, 0),
+            Align(
+                alignment: const Alignment(0, 0),
                 child: Icon(
+                  key: iconKey,
                   Icons.add_circle_outline,
                   color: Colors.pink,
                   size: 50.0,
@@ -81,19 +103,20 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                 child: FloatingActionButton.extended(
                   onPressed: () {
                     setState(() {
-                      RenderBox box =
-                          key.currentContext?.findRenderObject() as RenderBox;
-                      Offset position = box
-                          .localToGlobal(Offset.zero); //this is global position
-
                       myStack.add(Positioned(
+                          // bunch of stuff to add here:
+                          // select bullet diameter
+                          // add individual shot to charge/group linker
+                          // add logic to compute group size as shots are added
+                          // add dashboard see metrics
+                          // add button to save photo to user device
+                          // logic to save on firestore, then add group picture to test card
+                          // flag for disabling finish button or add to test button
+
                           // movement direction is correct but scaling needs some work
                           // below.
-
-                          width: MediaQuery.of(context).size.width -
-                              (position.dx * 2),
-                          height: MediaQuery.of(context).size.height -
-                              (position.dy * 2),
+                          top: getcoordinates(0),
+                          left: getcoordinates(1),
                           child: Icon(
                             Icons.add_circle_outline,
                             color: Colors.green,
@@ -104,7 +127,7 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                   label: const Text('Mark Impact'),
                 ),
               ),
-            )
+            ),
           ]),
         ));
   }

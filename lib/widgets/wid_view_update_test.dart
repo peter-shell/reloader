@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
 import 'package:measure_group/classes/class_inc_var_test.dart';
+import 'package:measure_group/widgets/wid_test_group_measure.dart';
 
 // serves as the create and edit screens for building/editing a cartridge
 // bullet_form -> powder_form -> brass_form -> primer_form -> cartridge_form
@@ -58,7 +59,10 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                 leading: const Icon(Icons.photo),
                 title: const Text('Measure Group'),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TestGroupMeasurer()));
                 },
               ),
             ],
