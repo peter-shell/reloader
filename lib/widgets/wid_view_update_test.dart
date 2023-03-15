@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
 import 'package:measure_group/classes/class_inc_var_test.dart';
@@ -62,7 +63,12 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TestGroupMeasurer()));
+                          builder: (context) => TestGroupMeasurer(
+                                loadObjects: widget.loadObjects,
+                                fireArmObjects: widget.fireArmObjects,
+                                emptyTest: widget.emptyTest,
+                                index: widget.index,
+                              )));
                 },
               ),
             ],
