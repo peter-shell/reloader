@@ -102,7 +102,7 @@ class _BulletFormState extends State<BulletForm> {
                               initialValue:
                                   widget.blankCartridge.bullet.bulletName,
                               decoration: const InputDecoration(
-                                  hintText: "Ex: Long Ramge Hybrid Target",
+                                  hintText: "Ex: Long Range Hybrid Target",
                                   labelText: "Bullet Name"),
                               onChanged: (value) {
                                 widget.blankCartridge.bullet.bulletName = value;

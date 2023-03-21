@@ -263,15 +263,15 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                         onPressed: widget.isButtonDiasabled
                             ? null
                             : () {
-                                widget.loadObjects[widget.index].tests
-                                    .add(widget.emptyTest);
+                                //widget.loadObjects[widget.index].tests
+                                //    .add(widget.emptyTest);
                                 final newJson = rewrap.rewrap(
                                     widget.loadObjects, widget.fireArmObjects);
                                 save_json.writeJson(newJson);
                                 // moves back to LoadDetail screen with newly added test
                                 int count = 0;
                                 Navigator.popUntil(context, (route) {
-                                  return count++ == 2;
+                                  return count++ == 1;
                                 });
                               },
 

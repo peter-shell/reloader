@@ -86,20 +86,6 @@ class _TestFormState extends State<TestForm> {
     }
   }
 
-// unused for now
-  Widget newGroupWidget(IncrementVarTest test) {
-    // creates empty cha
-    return Card(
-      child: Column(
-        children: [
-          Row(
-            children: [],
-          )
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,15 +185,19 @@ class _TestFormState extends State<TestForm> {
                       onPressed: widget.isButtonDiasabled
                           ? null
                           : () {
-                              //print(widget.numVariations);
+                              //create groups -> add to tests[]
                               createGroups();
+                              widget.loadObjects[widget.index].tests
+                                  .add(widget.emptyTest);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: ((context) => TestViewUpdateForm(
                                           loadObjects: widget.loadObjects,
                                           fireArmObjects: widget.fireArmObjects,
-                                          emptyTest: widget.emptyTest,
+                                          emptyTest: widget
+                                              .loadObjects[widget.index]
+                                              .tests[0],
                                           index: widget.index,
                                           titleString: "Tests",
                                           disableBackArrow: false))));
