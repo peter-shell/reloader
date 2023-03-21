@@ -32,8 +32,8 @@ void main() {
   secondGroup.add(Shot(velocity: 2755, xpos: 0, ypos: 0));
   secondGroup.ctcGroupSize = .4;
 
-  myTest.add(VarGroupLinker(chargeWeight: 40.5, group: firstGroup));
-  myTest.add(VarGroupLinker(chargeWeight: 40.8, group: secondGroup));
+  myTest.addGroup(VarGroupLinker(chargeWeight: 40.5, group: firstGroup));
+  myTest.addGroup(VarGroupLinker(chargeWeight: 40.8, group: secondGroup));
 
   test('add one linker to mytest', () {
     expect(myTest.varGroupList.length, 2);

@@ -35,4 +35,8 @@ class GeneralTest {
         "worst": worst!.toJson(),
         "testType": testType
       };
+  void addChargeWeightAndGroup(VarGroupLinker cwAndGrp) {
+    // TODO: add logic here to populate the test
+    chargesAndGroups!.add(cwAndGrp);
+  }
 }

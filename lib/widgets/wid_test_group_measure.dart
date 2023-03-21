@@ -1,6 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:measure_group/classes/class_cartridge.dart';
+import 'package:measure_group/classes/class_firearms.dart';
+import 'package:measure_group/classes/class_inc_var_test.dart';
 import 'package:measure_group/widgets/wid_display_picture.dart';
 import 'package:measure_group/widgets/wid_display_picture_test.dart';
 
@@ -8,8 +11,19 @@ import 'package:measure_group/widgets/wid_display_picture_test.dart';
 // pausing to work on another portion of the app
 
 class TestGroupMeasurer extends StatefulWidget {
-  const TestGroupMeasurer({super.key});
-
+  TestGroupMeasurer({
+    super.key,
+    required this.loadObjects,
+    required this.fireArmObjects,
+    required this.emptyTest,
+    required this.index,
+    //required this.titleString,
+  });
+  List<Cartridge> loadObjects;
+  List<FireArm> fireArmObjects;
+  IncrementVarTest emptyTest;
+  int index;
+  //String titleString;
   @override
   State<TestGroupMeasurer> createState() => _TestGroupMeasurerState();
 }
@@ -54,8 +68,9 @@ class _TestGroupMeasurerState extends State<TestGroupMeasurer> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            DisplayPictureScreen(imagePath: image.path)));
+                        builder: (context) => DisplayPictureScreen(
+                              imagePath: image.path,
+                            )));
               } on PlatformException catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Failed to pick image: $e')));
@@ -69,8 +84,14 @@ class _TestGroupMeasurerState extends State<TestGroupMeasurer> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const DisplayPictureScreenTest(
-                            imagePath: 'assets/images/test.jpg')));
+                        builder: (context) => DisplayPictureScreenTest(
+                              imagePath: 'assets/images/test.jpg',
+                              loadObjects: widget.loadObjects,
+                              fireArmObjects: widget.fireArmObjects,
+                              emptyTest: widget.emptyTest,
+                              index: widget.index,
+                              titleString: 'Measure Your Group',
+                            )));
               }),
               child: const Text('Test group stuff'))
         ],

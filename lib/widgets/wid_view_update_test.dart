@@ -3,6 +3,8 @@ import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
 import 'package:measure_group/classes/class_inc_var_test.dart';
 import 'package:measure_group/widgets/wid_test_group_measure.dart';
+import 'package:measure_group/module/mod_wrap_obj_to_json.dart' as rewrap;
+import 'package:measure_group/module/mod_save_json.dart' as save_json;
 
 // serves as the create and edit screens for building/editing a cartridge
 // bullet_form -> powder_form -> brass_form -> primer_form -> cartridge_form
@@ -32,7 +34,7 @@ class TestViewUpdateForm extends StatefulWidget {
   String titleString;
   bool disableBackArrow;
   //String? dropDownValue;
-  bool isButtonDiasabled = true;
+  bool isButtonDiasabled = false;
 
   @override
   State<TestViewUpdateForm> createState() => _TestViewUpdateFormState();
@@ -62,7 +64,12 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TestGroupMeasurer()));
+                          builder: (context) => TestGroupMeasurer(
+                                loadObjects: widget.loadObjects,
+                                fireArmObjects: widget.fireArmObjects,
+                                emptyTest: widget.emptyTest,
+                                index: widget.index,
+                              )));
                 },
               ),
             ],
@@ -249,8 +256,24 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                         child: listBuilder(widget.emptyTest),
                       )),
                       ElevatedButton(
-                        // TODO: fix button width, it's too big right now
-                        onPressed: widget.isButtonDiasabled ? null : null,
+                        // adds widget.emptyTest to current cartridge
+                        // package and save
+                        // pop back to previous page and send updated data, no
+                        // cloud reload needed
+                        onPressed: widget.isButtonDiasabled
+                            ? null
+                            : () {
+                                widget.loadObjects[widget.index].tests
+                                    .add(widget.emptyTest);
+                                final newJson = rewrap.rewrap(
+                                    widget.loadObjects, widget.fireArmObjects);
+                                save_json.writeJson(newJson);
+                                // moves back to LoadDetail screen with newly added test
+                                int count = 0;
+                                Navigator.popUntil(context, (route) {
+                                  return count++ == 2;
+                                });
+                              },
 
                         style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder()),

@@ -2,9 +2,6 @@ import 'dart:math';
 
 import 'class_shot.dart';
 
-//TODO: add some built in checking for shots added to list;
-// if that's the case, need to increment shot count
-
 class Group {
   List<Shot> shots = [];
   double ctcGroupSize;
@@ -14,6 +11,8 @@ class Group {
   double standDeviation;
   double extremeSpread;
   int numShots;
+  double bulletDiameter; // needs set by frontend
+  double iconSize; // needs set by frontend
   Group(
       {required this.shots,
       required this.ctcGroupSize,
@@ -22,7 +21,10 @@ class Group {
       required this.maxVelocity,
       required this.minVelocity,
       required this.standDeviation,
-      required this.numShots});
+      this.numShots = 0,
+      this.bulletDiameter = 0.0,
+      this.iconSize = 0.0});
+
   factory Group.fromJson(Map<String, dynamic> data) {
     final List<Shot> tempshots = [];
     if (data['shots'] != null) {
@@ -37,6 +39,8 @@ class Group {
     final standDeviation = double.parse(data['standDeviation'] ?? "0.0");
     final extremeSpread = double.parse(data['extremeSpread'] ?? "0.0");
     final numShots = int.parse(data['numShots'] ?? "0");
+    final bulletDiameter = double.parse(data['bulletDiameter']);
+    final iconSize = double.parse(data['iconSize']);
     return Group(
         shots: tempshots,
         ctcGroupSize: ctcGroupSize,
@@ -45,19 +49,23 @@ class Group {
         maxVelocity: maxVelocity,
         standDeviation: standDeviation,
         extremeSpread: extremeSpread,
-        numShots: numShots);
+        numShots: numShots,
+        bulletDiameter: bulletDiameter,
+        iconSize: iconSize);
   }
   Map<String, dynamic> toJson() => {
         "shots": shots == []
             ? null
             : List<dynamic>.from(shots.map((x) => x.toJson())),
-        "ctcGroupSize": ctcGroupSize.toString(),
-        "avgVelocity": avgVelocity.toString(),
-        "minVelocity": minVelocity.toString(),
-        "maxVelocity": maxVelocity.toString(),
-        "standDeviation": standDeviation.toString(),
-        "extremeSpread": extremeSpread.toString(),
-        "numShots": numShots.toString()
+        "ctcGroupSize": ctcGroupSize.toStringAsFixed(2),
+        "avgVelocity": avgVelocity.toStringAsFixed(2),
+        "minVelocity": minVelocity.toStringAsFixed(2),
+        "maxVelocity": maxVelocity.toStringAsFixed(2),
+        "standDeviation": standDeviation.toStringAsFixed(2),
+        "extremeSpread": extremeSpread.toStringAsFixed(2),
+        "numShots": numShots.toString(),
+        "bulletDiameter": bulletDiameter.toStringAsFixed(3),
+        "iconSize": iconSize.toStringAsFixed(2)
       };
   void calculateVelocityStuff() {
     double count = 0.0;
@@ -103,10 +111,46 @@ class Group {
     }
   }
 
+  void calculateGroupSize() {
+    // the parameter bulletDiameter is probably just temporary
+    double greatestDistance = 0;
+    for (int i = 0; i < shots.length; i++) {
+      for (int k = 1; k < shots.length; k++) {
+        if (distanceBetweenTwoPoints(shots[i], shots[k]) > greatestDistance) {
+          greatestDistance = distanceBetweenTwoPoints(shots[i], shots[k]);
+        }
+      }
+    }
+    double distanceInInches =
+        convertPixelsToInches(greatestDistance, bulletDiameter, iconSize);
+    // do some rounding on distanceInInches
+
+    ctcGroupSize = double.parse(distanceInInches.toStringAsFixed(2));
+  }
+
+  double distanceBetweenTwoPoints(Shot point1, Shot point2) {
+    // sqrt ((p2x - p1x)^2 + (p2y - p1y)^2)
+    num a = pow(point2.xpos - point1.xpos, 2);
+    num b = pow(point2.ypos - point1.ypos, 2);
+    return sqrt(a + b);
+  }
+
+  double convertPixelsToInches(double distanceInPixels, double knownMeasure,
+      double pixelsOfKnownMeasure) {
+    // divide  1  by knownMeasure, then multiple by pixelsOfKnownMeassure for pixels per inch
+    // divide distanceInPixels by pixels per inch
+    double pixelsPerInch = (1 / knownMeasure) * pixelsOfKnownMeasure;
+    return distanceInPixels / pixelsPerInch;
+  }
+
   void add(Shot shot) {
     shots.add(shot);
     if (shot.velocity > 1) {
       calculateVelocityStuff();
+    }
+    numShots += 1;
+    if (shots.length > 1) {
+      calculateGroupSize();
     }
   }
 }

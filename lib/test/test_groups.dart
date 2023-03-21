@@ -5,9 +5,13 @@ import 'package:test/test.dart';
 void main() {
   List<Shot> myShots = [];
   double velocity = 2700.0;
+  double xpos = 10;
+  double ypos = 10;
   for (int i = 0; i < 6; i++) {
-    myShots.add(Shot(velocity: velocity, xpos: 0, ypos: 0));
+    myShots.add(Shot(velocity: velocity, xpos: xpos, ypos: ypos));
     velocity += 25;
+    xpos += 50;
+    ypos += 75;
   }
   Group mygroup = Group(
       shots: [],
@@ -17,8 +21,12 @@ void main() {
       maxVelocity: 0,
       minVelocity: 0,
       standDeviation: 0);
+  mygroup.bulletDiameter = .264;
+  mygroup.iconSize = 50;
   myShots.forEach((shot) => {
         mygroup.add(shot),
+        print("Num Shots: ${mygroup.numShots}"),
+        print(mygroup.ctcGroupSize.toString())
         // print("Average Velocity: ${mygroup.avgVelocity}"),
         // print("Standard Deviation: ${mygroup.standDeviation}"),
         // print("Extreme Spread ${mygroup.extremeSpread}"),

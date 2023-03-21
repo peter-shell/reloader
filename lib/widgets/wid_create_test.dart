@@ -8,7 +8,7 @@ import 'package:measure_group/widgets/wid_view_update_test.dart';
 
 // serves as the create and edit screens for building/editing a cartridge
 // bullet_form -> powder_form -> brass_form -> primer_form -> cartridge_form
-// TODO: handle back button stuff. What happens when user goes backward on ceration
+// TODO: handle back button stuff. What happens when user goes backward on creation
 // of objects, what happens when user is updating already created objects
 
 // TODO: form validation!! also control flow through forms
@@ -78,9 +78,10 @@ class _TestFormState extends State<TestForm> {
           numShots: 0);
       VarGroupLinker chargeWeight =
           VarGroupLinker(chargeWeight: charge, group: myGroup);
-      widget.emptyTest.add(chargeWeight);
-      print(widget.emptyTest.varGroupList[i].chargeWeight);
+      widget.emptyTest.addGroup(chargeWeight);
+      // print(widget.emptyTest.varGroupList[i].chargeWeight);
       charge += widget.chargeWeightJump;
+      charge = double.parse(charge.toStringAsFixed(2));
       // charge = double.parse(charge.toStringAsPrecision(1));
     }
   }
@@ -211,7 +212,6 @@ class _TestFormState extends State<TestForm> {
                                           titleString: "Tests",
                                           disableBackArrow: false))));
                             },
-
                       style: ElevatedButton.styleFrom(
                           shape: const StadiumBorder()),
                       child: const Text('Create'),

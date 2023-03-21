@@ -3,6 +3,7 @@ import 'package:measure_group/classes/class_bullet.dart';
 import 'package:measure_group/classes/class_powder.dart';
 import 'package:measure_group/classes/class_brass.dart';
 import 'package:measure_group/classes/class_primer.dart';
+import 'package:measure_group/classes/class_test.dart';
 
 const String emptyStr = "";
 
@@ -11,7 +12,7 @@ Cartridge createSingleLoadObj() {
       bulletWeight: emptyStr,
       bulletManufacture: emptyStr,
       bulletName: emptyStr,
-      bulletCaliber: "emptyStr",
+      bulletCaliber: emptyStr,
       bulletDiameter: emptyStr,
       bulletLotNumber: emptyStr,
       g1bc: emptyStr,
@@ -46,7 +47,8 @@ Cartridge createSingleLoadObj() {
       cbto: emptyStr,
       powderWeight: emptyStr,
       notes: [],
-      fireArms: []);
+      fireArms: [],
+      tests: []);
 
   return newCartridge;
 }
