@@ -23,7 +23,7 @@ class IncrementVarTest extends GeneralTest {
             : List<dynamic>.from(varGroupList.map((x) => x.toJson())),
         "smallestGroup": smallestGroup
       };
-  void add(VarGroupLinker linker) {
+  void addGroup(VarGroupLinker linker) {
     varGroupList.add(linker);
     findSmallestGroup();
   }

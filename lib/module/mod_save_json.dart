@@ -7,7 +7,7 @@ void writeJson(Map<String, dynamic> dataToWrite) async {
   const String fileName = "test.json";
   final directory = await getApplicationDocumentsDirectory();
   String path = directory.path;
-
+  // print(path);
   String pathToSave = '$path/$fileName';
   final fileToSave = File(pathToSave);
   //TODO: probably need to de-quote dataToWrite, same for reading

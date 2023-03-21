@@ -1,3 +1,5 @@
+import 'package:measure_group/classes/class_inc_var_test.dart';
+
 import 'class_brass.dart';
 import 'class_bullet.dart';
 import 'class_powder.dart';
@@ -16,6 +18,7 @@ class Cartridge {
   String powderWeight;
   List notes;
   List fireArms;
+  List tests;
 
   Cartridge(
       {required this.bullet,
@@ -27,7 +30,8 @@ class Cartridge {
       required this.cbto,
       required this.powderWeight,
       required this.notes,
-      required this.fireArms});
+      required this.fireArms,
+      required this.tests});
 
   factory Cartridge.fromJson(Map<String, dynamic> data) {
     final bullet = Bullet.fromJson(data['bullet']);
@@ -40,6 +44,7 @@ class Cartridge {
     final powderWeight = data['powderWeight'] as String?;
     final tempNotes = [];
     final tempFireArms = [];
+    final tempTests = [];
     if (data['notes'] != null) {
       data['notes'].forEach((note) {
         tempNotes.add(Note.fromJson(note));
@@ -49,6 +54,11 @@ class Cartridge {
       data['fireArms'].forEach((fireArm) {
         tempFireArms.add(FireArm.fromJson(fireArm));
       });
+      if (data['tests'] != null) {
+        data['tests'].forEach((test) {
+          tempTests.add(IncrementVarTest.fromJson(test));
+        });
+      }
     }
     return Cartridge(
         bullet: bullet,
@@ -60,7 +70,8 @@ class Cartridge {
         cbto: cbto ?? "",
         powderWeight: powderWeight ?? "",
         notes: tempNotes,
-        fireArms: tempFireArms);
+        fireArms: tempFireArms,
+        tests: tempTests);
   }
   Map<String, dynamic> toJson() => {
         "bullet": bullet.toJson(),
@@ -77,6 +88,10 @@ class Cartridge {
         "notes": notes == []
             ? null
             : List<dynamic>.from(notes.map((x) => x.toJson())),
+        "tests": tests == []
+            ? null
+            : List<dynamic>.from(tests.map((x) => x.toJson()))
       };
+
   void update(Map<String, dynamic> loadData) => {null};
 }

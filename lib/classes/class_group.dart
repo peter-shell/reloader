@@ -57,15 +57,15 @@ class Group {
         "shots": shots == []
             ? null
             : List<dynamic>.from(shots.map((x) => x.toJson())),
-        "ctcGroupSize": ctcGroupSize.toString(),
-        "avgVelocity": avgVelocity.toString(),
-        "minVelocity": minVelocity.toString(),
-        "maxVelocity": maxVelocity.toString(),
-        "standDeviation": standDeviation.toString(),
-        "extremeSpread": extremeSpread.toString(),
+        "ctcGroupSize": ctcGroupSize.toStringAsFixed(2),
+        "avgVelocity": avgVelocity.toStringAsFixed(2),
+        "minVelocity": minVelocity.toStringAsFixed(2),
+        "maxVelocity": maxVelocity.toStringAsFixed(2),
+        "standDeviation": standDeviation.toStringAsFixed(2),
+        "extremeSpread": extremeSpread.toStringAsFixed(2),
         "numShots": numShots.toString(),
-        "bulletDiameter": bulletDiameter.toString(),
-        "iconSize": iconSize.toString()
+        "bulletDiameter": bulletDiameter.toStringAsFixed(3),
+        "iconSize": iconSize.toStringAsFixed(2)
       };
   void calculateVelocityStuff() {
     double count = 0.0;
@@ -125,7 +125,7 @@ class Group {
         convertPixelsToInches(greatestDistance, bulletDiameter, iconSize);
     // do some rounding on distanceInInches
 
-    ctcGroupSize = distanceInInches;
+    ctcGroupSize = double.parse(distanceInInches.toStringAsFixed(2));
   }
 
   double distanceBetweenTwoPoints(Shot point1, Shot point2) {

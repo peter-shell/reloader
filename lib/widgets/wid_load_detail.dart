@@ -328,6 +328,65 @@ class _LoadDetailState extends State<LoadDetail> {
       ),
     );
 
+    Widget allTests = Column(children: [
+      widget.loadObjects[widget.index].tests.isNotEmpty
+          ? Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: widget.loadObjects[widget.index].tests.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) {
+                  return Slidable(
+                    endActionPane: ActionPane(
+                      motion: ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: null,
+                          backgroundColor: Colors.grey,
+                          foregroundColor: Colors.white,
+                          icon: Icons.more_horiz,
+                          label: 'Edit',
+                        ),
+                        SlidableAction(
+                          onPressed: null,
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
+                        ),
+                      ],
+                    ),
+                    child: Card(
+                      margin: const EdgeInsets.all(2),
+                      child: ListTile(
+                        onTap: null,
+                        title: Expanded(
+                          child: Text(
+                              "${widget.loadObjects[widget.index].tests[index].testType}gr"),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                  " Best: ${widget.loadObjects[widget.index].tests[index].best}"),
+                            ),
+                            Expanded(
+                              child: Text(
+                                  " Worst: ${widget.loadObjects[widget.index].tests[index].worst}"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+          : Container(),
+    ]);
+
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.loadObjects[widget.index].bullet.bulletCaliber)),
@@ -338,6 +397,7 @@ class _LoadDetailState extends State<LoadDetail> {
           brassInfo,
           primerInfo,
           cartridgeInfo,
+          Expanded(child: allTests),
           testView,
         ]),
       ),

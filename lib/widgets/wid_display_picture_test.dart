@@ -88,7 +88,6 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
         // constructor with the given path to display the image.
 
         body: Container(
-          alignment: Alignment.center,
           child: Column(
             children: [
               Expanded(
@@ -110,7 +109,7 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                             myStack), // myStack initially contains Image Widget
                   ),
                   Align(
-                      alignment: Alignment(0, 0),
+                      alignment: const Alignment(0, 0),
                       child: Icon(
                         key: iconKey,
                         Icons.add_circle_outline,
@@ -118,6 +117,14 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                         size: 50.0,
                       )),
                 ]),
+              ),
+              ListTile(
+                subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("CTC Group Size: fixme"),
+                      Text("Number Of Shots:")
+                    ]),
               ),
               Align(
                 alignment: Alignment.bottomCenter,

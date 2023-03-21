@@ -44,7 +44,8 @@ Cartridge createSingleLoadObj(Map<String, dynamic> loadData) {
       coal: loadData['coal'] ?? "",
       cbto: loadData['cbto'] ?? "",
       notes: [],
-      fireArms: []);
+      fireArms: [],
+      tests: []);
 
   return newCartridge;
 }
