@@ -26,7 +26,8 @@ class TestViewUpdateForm extends StatefulWidget {
       required this.emptyTest,
       required this.index,
       required this.titleString,
-      required this.disableBackArrow});
+      required this.disableBackArrow,
+      required this.numJumpsBack});
   List<Cartridge> loadObjects;
   List<FireArm> fireArmObjects;
   IncrementVarTest emptyTest;
@@ -35,6 +36,7 @@ class TestViewUpdateForm extends StatefulWidget {
   bool disableBackArrow;
   //String? dropDownValue;
   bool isButtonDiasabled = false;
+  int numJumpsBack;
 
   @override
   State<TestViewUpdateForm> createState() => _TestViewUpdateFormState();
@@ -272,7 +274,7 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                                 // moves back to LoadDetail screen with newly added test
                                 int count = 0;
                                 Navigator.popUntil(context, (route) {
-                                  return count++ == 1;
+                                  return count++ == widget.numJumpsBack;
                                 });
                               },
 

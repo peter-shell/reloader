@@ -101,17 +101,18 @@ class _LoadDetailState extends State<LoadDetail> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TestViewUpdateForm(
-                                    loadObjects: widget.loadObjects,
-                                    fireArmObjects: widget.fireArmObjects,
-                                    emptyTest: widget
-                                        .loadObjects[widget.index].tests[index],
-                                    index: widget.index,
-                                    titleString: "Edit Test",
-                                    disableBackArrow: false)))
-                        .then((value) => setState(() {}));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TestViewUpdateForm(
+                                  loadObjects: widget.loadObjects,
+                                  fireArmObjects: widget.fireArmObjects,
+                                  emptyTest: widget
+                                      .loadObjects[widget.index].tests[index],
+                                  index: widget.index,
+                                  titleString: "Edit Test",
+                                  disableBackArrow: false,
+                                  numJumpsBack: 1,
+                                ))).then((value) => setState(() {}));
                   },
                   child: Card(
                     child: Column(
@@ -128,13 +129,14 @@ class _LoadDetailState extends State<LoadDetail> {
                         Row(
                           children: [
                             Expanded(
-                              child: Text("Best: ${list[index].best}"),
+                              child: Text("Best: ${list[index].smallestGroup}"),
                             ),
                             Expanded(
-                              child: Text("Worst: ${list[index].worst}"),
+                              child: Text("Worst: ${list[index].largestGroup}"),
                             ),
                             Expanded(
-                              child: Text("Average: ${list[index].average}"),
+                              child:
+                                  Text("Average: ${list[index].averageGroup}"),
                             ),
                           ],
                         )

@@ -193,14 +193,17 @@ class _TestFormState extends State<TestForm> {
                                   context,
                                   MaterialPageRoute(
                                       builder: ((context) => TestViewUpdateForm(
-                                          loadObjects: widget.loadObjects,
-                                          fireArmObjects: widget.fireArmObjects,
-                                          emptyTest: widget
-                                              .loadObjects[widget.index]
-                                              .tests[0],
-                                          index: widget.index,
-                                          titleString: "Tests",
-                                          disableBackArrow: false))));
+                                            loadObjects: widget.loadObjects,
+                                            fireArmObjects:
+                                                widget.fireArmObjects,
+                                            emptyTest: widget
+                                                .loadObjects[widget.index]
+                                                .tests[0],
+                                            index: widget.index,
+                                            titleString: "Tests",
+                                            disableBackArrow: false,
+                                            numJumpsBack: 2,
+                                          ))));
                             },
                       style: ElevatedButton.styleFrom(
                           shape: const StadiumBorder()),
