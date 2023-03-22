@@ -149,8 +149,8 @@ class Group {
       calculateVelocityStuff();
     }
     numShots += 1;
-    if (shots.length > 1) {
-      calculateGroupSize();
-    }
+    // if (shots.length > 1) {
+    //   calculateGroupSize();
+    // }
   }
 }

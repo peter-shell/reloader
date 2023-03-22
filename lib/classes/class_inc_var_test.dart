@@ -44,14 +44,14 @@ class IncrementVarTest extends GeneralTest {
 
   double calAverage(List<double> groupSizes) {
     double sum = 0;
-    groupSizes.map((e) => sum += e);
+    groupSizes.forEach((e) => sum += e);
     return sum / groupSizes.length;
   }
 
   void smallestAndLargestGroup() {
     List<double> groupSizes = [];
 
-    varGroupList.map((linker) {
+    varGroupList.forEach((linker) {
       groupSizes.add(linker.group.ctcGroupSize);
       if (smallestGroup == 0.0) {
         smallestGroup = linker.group.ctcGroupSize;
@@ -67,6 +67,6 @@ class IncrementVarTest extends GeneralTest {
         largestGroup = linker.group.ctcGroupSize;
       }
     });
-    //averageGroup = calAverage(groupSizes);
+    averageGroup = calAverage(groupSizes);
   }
 }
