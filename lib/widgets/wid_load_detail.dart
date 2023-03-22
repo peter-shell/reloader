@@ -392,7 +392,10 @@ class _LoadDetailState extends State<LoadDetail> {
                                     loadObjects: widget.loadObjects,
                                     fireArmObjects: widget.fireArmObjects,
                                     emptyTest: IncrementVarTest(
-                                        varGroupList: [], smallestGroup: 0.0),
+                                        varGroupList: [],
+                                        smallestGroup: 0.0,
+                                        largestGroup: 0.0,
+                                        averageGroup: 0.0),
                                     index: widget.index,
                                     titleString: "Create Test",
                                     arrow: false)))

@@ -265,6 +265,7 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                             : () {
                                 //widget.loadObjects[widget.index].tests
                                 //    .add(widget.emptyTest);
+                                widget.emptyTest.smallestAndLargestGroup();
                                 final newJson = rewrap.rewrap(
                                     widget.loadObjects, widget.fireArmObjects);
                                 save_json.writeJson(newJson);
