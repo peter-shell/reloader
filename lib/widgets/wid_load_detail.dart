@@ -12,6 +12,7 @@ import 'package:measure_group/classes/class_bullet.dart';
 import 'package:measure_group/widgets/wid_create_test.dart';
 import 'package:measure_group/widgets/wid_note_form.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:measure_group/widgets/wid_view_update_test.dart';
 
 class LoadDetail extends StatefulWidget {
   LoadDetail(
@@ -30,14 +31,6 @@ class LoadDetail extends StatefulWidget {
 class _LoadDetailState extends State<LoadDetail> {
   @override
   Widget build(BuildContext context) {
-    // setting to variables so I don't have to type all this out everytime
-    // I reference .bullet.weight, etc..
-    Bullet bullet = widget.loadObjects[widget.index].bullet;
-    Powder powder = widget.loadObjects[widget.index].powder;
-    Brass brass = widget.loadObjects[widget.index].brass;
-    Primer primer = widget.loadObjects[widget.index].primer;
-    Cartridge cartridge = widget.loadObjects[widget.index];
-
     void deleteNote(index, list) {
       list.removeAt(index);
       final newJson = rewrap.rewrap(widget.loadObjects, widget.fireArmObjects);
@@ -87,6 +80,71 @@ class _LoadDetailState extends State<LoadDetail> {
           });
     }
 
+    Widget testSliders(List<dynamic> list) {
+      return ListView.builder(
+          shrinkWrap: true,
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            return Slidable(
+                endActionPane:
+                    ActionPane(motion: const ScrollMotion(), children: [
+                  SlidableAction(
+                    onPressed: ((context) {
+                      deleteNote(index, list);
+                    }),
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    icon: Icons.remove,
+                    label: 'Delete',
+                  )
+                ]),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TestViewUpdateForm(
+                                    loadObjects: widget.loadObjects,
+                                    fireArmObjects: widget.fireArmObjects,
+                                    emptyTest: widget
+                                        .loadObjects[widget.index].tests[index],
+                                    index: widget.index,
+                                    titleString: "Edit Test",
+                                    disableBackArrow: false)))
+                        .then((value) => setState(() {}));
+                  },
+                  child: Card(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "${list[index].testType} Test",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text("Best: ${list[index].best}"),
+                            ),
+                            Expanded(
+                              child: Text("Worst: ${list[index].worst}"),
+                            ),
+                            Expanded(
+                              child: Text("Average: ${list[index].average}"),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ));
+          });
+    }
+
     Widget noteButton(int typeNote) {
       return ElevatedButton(
           onPressed: () {
@@ -118,24 +176,32 @@ class _LoadDetailState extends State<LoadDetail> {
                 Row(
                   children: [
                     Text(
-                        "Bullet: ${bullet.bulletWeight}gr ${bullet.bulletManufacture} ${bullet.bulletName}")
+                        "Bullet: ${widget.loadObjects[widget.index].bullet.bulletWeight}gr ${widget.loadObjects[widget.index].bullet.bulletManufacture} ${widget.loadObjects[widget.index].bullet.bulletName}")
                   ],
                 ),
                 Row(
                   children: [
-                    Text("Lot: ${bullet.bulletLotNumber}"),
+                    Text(
+                        "Lot: ${widget.loadObjects[widget.index].bullet.bulletLotNumber}"),
                   ],
-                ),
-                Row(
-                  children: [Text("Diameter: ${bullet.bulletDiameter}")],
                 ),
                 Row(
                   children: [
-                    Text("G1 BC: ${bullet.g1bc}"),
+                    Text(
+                        "Diameter: ${widget.loadObjects[widget.index].bullet.bulletDiameter}")
                   ],
                 ),
                 Row(
-                  children: [Text("G7 BC: ${bullet.g7bc}")],
+                  children: [
+                    Text(
+                        "G1 BC: ${widget.loadObjects[widget.index].bullet.g1bc}"),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                        "G7 BC: ${widget.loadObjects[widget.index].bullet.g7bc}")
+                  ],
                 )
               ],
             ),
@@ -165,12 +231,13 @@ class _LoadDetailState extends State<LoadDetail> {
                 Row(
                   children: [
                     Text(
-                        "Powder: ${powder.powderManufacture} ${powder.powderName}")
+                        "Powder: ${widget.loadObjects[widget.index].powder.powderManufacture} ${widget.loadObjects[widget.index].powder.powderName}")
                   ],
                 ),
                 Row(
                   children: [
-                    Text("Lot: ${powder.powderLotNumber}"),
+                    Text(
+                        "Lot: ${widget.loadObjects[widget.index].powder.powderLotNumber}"),
                   ],
                 ),
               ],
@@ -201,12 +268,13 @@ class _LoadDetailState extends State<LoadDetail> {
                 Row(
                   children: [
                     Text(
-                        "Brass: ${brass.brassManufacture} fired ${brass.numOfFirings} times")
+                        "Brass: ${widget.loadObjects[widget.index].brass.brassManufacture} fired ${widget.loadObjects[widget.index].brass.numOfFirings} times")
                   ],
                 ),
                 Row(
                   children: [
-                    Text("Lot: ${brass.brassLotNumber}"),
+                    Text(
+                        "Lot: ${widget.loadObjects[widget.index].brass.brassLotNumber}"),
                   ],
                 ),
               ],
@@ -237,12 +305,13 @@ class _LoadDetailState extends State<LoadDetail> {
                 Row(
                   children: [
                     Text(
-                        "Brass: ${primer.primerManufacture} ${primer.primerName}")
+                        "Brass: ${widget.loadObjects[widget.index].primer.primerManufacture} ${widget.loadObjects[widget.index].primer.primerName}")
                   ],
                 ),
                 Row(
                   children: [
-                    Text("Lot: ${primer.primerLotNumber}"),
+                    Text(
+                        "Lot: ${widget.loadObjects[widget.index].primer.primerLotNumber}"),
                   ],
                 ),
               ],
@@ -271,19 +340,27 @@ class _LoadDetailState extends State<LoadDetail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  children: [Text("Charge Weight: ${cartridge.powderWeight}")],
-                ),
-                Row(
-                  children: [Text("Trim Length: ${cartridge.trimLength}")],
-                ),
-                Row(
                   children: [
-                    Text("Cartridge Over All Length: ${cartridge.coal}"),
+                    Text(
+                        "Charge Weight: ${widget.loadObjects[widget.index].powderWeight}")
                   ],
                 ),
                 Row(
                   children: [
-                    Text("Cartridge Base To Ojive: ${cartridge.cbto}")
+                    Text(
+                        "Trim Length: ${widget.loadObjects[widget.index].trimLength}")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                        "Cartridge Over All Length: ${widget.loadObjects[widget.index].coal}"),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                        "Cartridge Base To Ojive: ${widget.loadObjects[widget.index].cbto}")
                   ],
                 )
               ],
@@ -301,7 +378,7 @@ class _LoadDetailState extends State<LoadDetail> {
       ]),
     );
 
-    Widget testView = Card(
+    Widget addTest = Card(
       child: Column(
         children: [
           Row(
@@ -315,7 +392,10 @@ class _LoadDetailState extends State<LoadDetail> {
                                     loadObjects: widget.loadObjects,
                                     fireArmObjects: widget.fireArmObjects,
                                     emptyTest: IncrementVarTest(
-                                        varGroupList: [], smallestGroup: 0.0),
+                                        varGroupList: [],
+                                        smallestGroup: 0.0,
+                                        largestGroup: 0.0,
+                                        averageGroup: 0.0),
                                     index: widget.index,
                                     titleString: "Create Test",
                                     arrow: false)))
@@ -328,78 +408,30 @@ class _LoadDetailState extends State<LoadDetail> {
       ),
     );
 
-    Widget allTests = Column(children: [
+    Widget allTests =
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       widget.loadObjects[widget.index].tests.isNotEmpty
-          ? Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                primary: false,
-                itemCount: widget.loadObjects[widget.index].tests.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  return Slidable(
-                    endActionPane: ActionPane(
-                      motion: ScrollMotion(),
-                      children: [
-                        SlidableAction(
-                          onPressed: null,
-                          backgroundColor: Colors.grey,
-                          foregroundColor: Colors.white,
-                          icon: Icons.more_horiz,
-                          label: 'Edit',
-                        ),
-                        SlidableAction(
-                          onPressed: null,
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white,
-                          icon: Icons.delete,
-                          label: 'Delete',
-                        ),
-                      ],
-                    ),
-                    child: Card(
-                      margin: const EdgeInsets.all(2),
-                      child: ListTile(
-                        onTap: null,
-                        title: Expanded(
-                          child: Text(
-                              "${widget.loadObjects[widget.index].tests[index].testType}gr"),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                  " Best: ${widget.loadObjects[widget.index].tests[index].best}"),
-                            ),
-                            Expanded(
-                              child: Text(
-                                  " Worst: ${widget.loadObjects[widget.index].tests[index].worst}"),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            )
+          ? testSliders(widget.loadObjects[widget.index].tests)
           : Container(),
     ]);
+
+    List<Widget> listViewChildren = [
+      bulletInfo,
+      powderInfo,
+      brassInfo,
+      primerInfo,
+      cartridgeInfo,
+      addTest,
+      allTests
+    ];
 
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.loadObjects[widget.index].bullet.bulletCaliber)),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          bulletInfo,
-          powderInfo,
-          brassInfo,
-          primerInfo,
-          cartridgeInfo,
-          Expanded(child: allTests),
-          testView,
-        ]),
+      body: Column(
+        children: [
+          Expanded(child: ListView(primary: true, children: listViewChildren)),
+        ],
       ),
     );
   }
