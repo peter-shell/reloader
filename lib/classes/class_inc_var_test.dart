@@ -67,6 +67,6 @@ class IncrementVarTest extends GeneralTest {
         largestGroup = linker.group.ctcGroupSize;
       }
     });
-    averageGroup = calAverage(groupSizes);
+    //averageGroup = calAverage(groupSizes);
   }
 }
