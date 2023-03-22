@@ -9,7 +9,8 @@ void main() {
       varGroupList: [],
       smallestGroup: 0.0,
       largestGroup: 0.0,
-      averageGroup: 0.0);
+      averageGroup: 0.0,
+      testType: "");
   Group firstGroup = Group(
       shots: [],
       ctcGroupSize: 1.5,

@@ -188,7 +188,7 @@ class _TestFormState extends State<TestForm> {
                               //create groups -> add to tests[]
                               createGroups();
                               widget.loadObjects[widget.index].tests
-                                  .add(widget.emptyTest);
+                                  .insert(0, widget.emptyTest);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
