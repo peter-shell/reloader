@@ -9,9 +9,9 @@ void main() {
   double ypos = 10;
   for (int i = 0; i < 6; i++) {
     myShots.add(Shot(velocity: velocity, xpos: xpos, ypos: ypos));
-    velocity += 25;
-    xpos += 50;
-    ypos += 75;
+    velocity += 0;
+    xpos += 50.5;
+    ypos += 75.2;
   }
   Group mygroup = Group(
       shots: [],
@@ -24,7 +24,7 @@ void main() {
   mygroup.bulletDiameter = .264;
   mygroup.iconSize = 50;
   myShots.forEach((shot) => {
-        mygroup.add(shot),
+        mygroup.addShot(shot),
         print("Num Shots: ${mygroup.numShots}"),
         print(mygroup.ctcGroupSize.toString())
         // print("Average Velocity: ${mygroup.avgVelocity}"),

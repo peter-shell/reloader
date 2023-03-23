@@ -200,6 +200,8 @@ class _TestFormState extends State<TestForm> {
                                             titleString: "Tests",
                                             disableBackArrow: false,
                                             numJumpsBack: 2,
+                                            testIndex:
+                                                0, // seems like there's a better way? why pass this (and the one above) when I could get it on the next screen?
                                           ))));
                             },
                       style: ElevatedButton.styleFrom(

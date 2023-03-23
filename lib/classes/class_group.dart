@@ -143,14 +143,16 @@ class Group {
     return distanceInPixels / pixelsPerInch;
   }
 
-  void add(Shot shot) {
+  void addShot(Shot shot) {
     shots.add(shot);
     if (shot.velocity > 1) {
       calculateVelocityStuff();
     }
     numShots += 1;
-    // if (shots.length > 1) {
-    //   calculateGroupSize();
-    // }
+    if (shots.length > 1) {
+      calculateGroupSize();
+      print(iconSize);
+      print(ctcGroupSize);
+    }
   }
 }

@@ -109,6 +109,7 @@ class _LoadDetailState extends State<LoadDetail> {
                                   titleString: "Edit Test",
                                   disableBackArrow: false,
                                   numJumpsBack: 1,
+                                  testIndex: index,
                                 ))).then((value) => setState(() {}));
                   },
                   child: Card(

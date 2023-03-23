@@ -19,9 +19,9 @@ void main() {
       maxVelocity: 0,
       minVelocity: 0,
       standDeviation: 0);
-  firstGroup.add(Shot(velocity: 2715, xpos: 0, ypos: 0));
-  firstGroup.add(Shot(velocity: 2710, xpos: 0, ypos: 0));
-  firstGroup.add(Shot(velocity: 2716, xpos: 0, ypos: 0));
+  firstGroup.addShot(Shot(velocity: 2715, xpos: 0, ypos: 0));
+  firstGroup.addShot(Shot(velocity: 2710, xpos: 0, ypos: 0));
+  firstGroup.addShot(Shot(velocity: 2716, xpos: 0, ypos: 0));
 
   Group secondGroup = Group(
       shots: [],
@@ -31,9 +31,9 @@ void main() {
       maxVelocity: 0,
       minVelocity: 0,
       standDeviation: 0);
-  secondGroup.add(Shot(velocity: 2715, xpos: 0, ypos: 0));
-  secondGroup.add(Shot(velocity: 2780, xpos: 0, ypos: 0));
-  secondGroup.add(Shot(velocity: 2755, xpos: 0, ypos: 0));
+  secondGroup.addShot(Shot(velocity: 2715, xpos: 0, ypos: 0));
+  secondGroup.addShot(Shot(velocity: 2780, xpos: 0, ypos: 0));
+  secondGroup.addShot(Shot(velocity: 2755, xpos: 0, ypos: 0));
   secondGroup.ctcGroupSize = .4;
   print("Second group: ${secondGroup.ctcGroupSize}");
   myTest.addGroup(VarGroupLinker(chargeWeight: 40.5, group: firstGroup));

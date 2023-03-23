@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
-import 'package:measure_group/classes/class_inc_var_test.dart';
+import 'package:measure_group/classes/class_group.dart';
+import 'package:measure_group/classes/class_shot.dart';
+import 'package:measure_group/module/mod_list_caliber_data.dart';
 
 // A widget that displays the picture taken by the user.
 class DisplayPictureScreenTest extends StatefulWidget {
@@ -12,15 +14,18 @@ class DisplayPictureScreenTest extends StatefulWidget {
     required this.imagePath,
     required this.loadObjects,
     required this.fireArmObjects,
-    required this.emptyTest,
+    required this.groupToAddShotData,
     required this.index,
     required this.titleString,
   });
   List<Cartridge> loadObjects;
   List<FireArm> fireArmObjects;
-  IncrementVarTest emptyTest;
+  Group groupToAddShotData;
   int index;
   String titleString;
+  String? dropDownValue;
+  bool fabDisabled = true;
+
   @override
   State<DisplayPictureScreenTest> createState() =>
       _DisplayPictureScreenTestState();
@@ -39,9 +44,9 @@ void dispose() {
   dispose();
 }
 
-// input: 0 for top, 1 for left
+// input: x or y for coords
 // output: returns top or left position as double
-double getcoordinates(int position) {
+double getcoordinates(String position) {
   // convert icon.global positions to image.local positons
   // image local to global
   // set green icon to global
@@ -49,10 +54,10 @@ double getcoordinates(int position) {
   RenderBox iconBox = iconKey.currentContext?.findRenderObject() as RenderBox;
   Offset iconPositions = iconBox.localToGlobal(Offset.zero);
   Offset globalToLocalImage = imageBox.globalToLocal(iconPositions);
-  if (position == 0) {
+  if (position == "y") {
     return globalToLocalImage.dy;
   }
-  if (position == 1) {
+  if (position == "x") {
     return globalToLocalImage.dx;
   } else {
     return 0;
@@ -75,6 +80,9 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
         //key: key,
       ),
     ];
+    // for dropdown button
+    widget.dropDownValue = caliberMenuItems.first.value!;
+
     super.initState();
   }
 
@@ -118,12 +126,31 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                       )),
                 ]),
               ),
+              DropdownButton<String>(
+                value: widget.dropDownValue,
+                items: caliberMenuItems,
+                onChanged: (newValue) {
+                  if (newValue != "None") {
+                    widget.fabDisabled = false;
+                    widget.groupToAddShotData.bulletDiameter =
+                        double.parse(newValue!);
+                  }
+                  if (newValue == "None") {
+                    widget.fabDisabled = true;
+                  }
+                  setState(() {
+                    widget.dropDownValue = newValue!;
+                  });
+                },
+              ),
               ListTile(
                 subtitle: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("CTC Group Size: fixme"),
-                      Text("Number Of Shots:")
+                      Text(
+                          "CTC Group Size: ${widget.groupToAddShotData.ctcGroupSize}"),
+                      Text(
+                          "Number Of Shots: ${widget.groupToAddShotData.shots.length}")
                     ]),
               ),
               Align(
@@ -131,29 +158,43 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                 child: Padding(
                   padding: const EdgeInsets.all(25),
                   child: FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        scaleEnabled =
-                            false; // this works but needs wrapped in a conditional
-                        myStack.add(Positioned(
+                    backgroundColor:
+                        widget.fabDisabled ? Colors.grey : Colors.blue,
+                    onPressed: widget.fabDisabled
+                        ? null
+                        : () {
+                            setState(() {
+                              scaleEnabled =
+                                  false; // this works but needs wrapped in a conditional
+                              double x = getcoordinates("x");
 
-                            // bunch of stuff to add here:
-                            // select bullet diameter
-                            // add individual shot to charge/group linker
-                            // add logic to compute group size as shots are added
-                            // add dashboard see metrics
-                            // add button to save photo to user device
-                            // logic to save on firestore, then add group picture to test card
-                            // flag for disabling finish button or add to test button
-                            top: getcoordinates(0),
-                            left: getcoordinates(1),
-                            child: Icon(
-                              Icons.add_circle_outline,
-                              color: Colors.green,
-                              size: 50.0 / viewerScale,
-                            )));
-                      });
-                    },
+                              double y = getcoordinates("y");
+                              print(x);
+                              print(y);
+                              myStack.add(Positioned(
+
+                                  // bunch of stuff to add here:
+                                  // select bullet diameter
+                                  // add individual shot to charge/group linker
+                                  // add logic to compute group size as shots are added
+                                  // add dashboard see metrics
+                                  // add button to save photo to user device
+                                  // logic to save on firestore, then add group picture to test card
+                                  // flag for disabling finish button or add to test button
+                                  top: y,
+                                  left: x,
+                                  child: Icon(
+                                    Icons.add_circle_outline,
+                                    color: Colors.green,
+                                    size: 50.0 / viewerScale,
+                                  )));
+
+                              widget.groupToAddShotData.iconSize = 50.0 /
+                                  viewerScale; // only need to set this once, it shouldn't change
+                              widget.groupToAddShotData
+                                  .addShot(Shot(velocity: 0, xpos: x, ypos: y));
+                            });
+                          },
                     child: const Text('Mark'),
                   ),
                 ),

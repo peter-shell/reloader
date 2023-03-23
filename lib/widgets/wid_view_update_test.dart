@@ -27,7 +27,8 @@ class TestViewUpdateForm extends StatefulWidget {
       required this.index,
       required this.titleString,
       required this.disableBackArrow,
-      required this.numJumpsBack});
+      required this.numJumpsBack,
+      required this.testIndex});
   List<Cartridge> loadObjects;
   List<FireArm> fireArmObjects;
   IncrementVarTest emptyTest;
@@ -37,6 +38,7 @@ class TestViewUpdateForm extends StatefulWidget {
   //String? dropDownValue;
   bool isButtonDiasabled = false;
   int numJumpsBack;
+  int testIndex;
 
   @override
   State<TestViewUpdateForm> createState() => _TestViewUpdateFormState();
@@ -52,7 +54,7 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
     super.dispose();
   }
 
-  Future bottomSheet() {
+  Future bottomSheet(int index) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -69,7 +71,11 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                           builder: (context) => TestGroupMeasurer(
                                 loadObjects: widget.loadObjects,
                                 fireArmObjects: widget.fireArmObjects,
-                                emptyTest: widget.emptyTest,
+                                groupToAddShotData: widget
+                                    .loadObjects[widget.index]
+                                    .tests[widget.testIndex]
+                                    .varGroupList[index]
+                                    .group,
                                 index: widget.index,
                               )));
                 },
@@ -99,7 +105,7 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
             trailing: IconButton(
               icon: const Icon(Icons.more_vert),
               onPressed: () {
-                bottomSheet();
+                bottomSheet(index);
               },
             ),
           ),

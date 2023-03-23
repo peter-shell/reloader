@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
+import 'package:measure_group/classes/class_group.dart';
 import 'package:measure_group/classes/class_inc_var_test.dart';
 import 'package:measure_group/widgets/wid_display_picture.dart';
 import 'package:measure_group/widgets/wid_display_picture_test.dart';
@@ -15,13 +16,13 @@ class TestGroupMeasurer extends StatefulWidget {
     super.key,
     required this.loadObjects,
     required this.fireArmObjects,
-    required this.emptyTest,
+    required this.groupToAddShotData,
     required this.index,
     //required this.titleString,
   });
   List<Cartridge> loadObjects;
   List<FireArm> fireArmObjects;
-  IncrementVarTest emptyTest;
+  Group groupToAddShotData;
   int index;
   //String titleString;
   @override
@@ -88,7 +89,7 @@ class _TestGroupMeasurerState extends State<TestGroupMeasurer> {
                               imagePath: 'assets/images/test.jpg',
                               loadObjects: widget.loadObjects,
                               fireArmObjects: widget.fireArmObjects,
-                              emptyTest: widget.emptyTest,
+                              groupToAddShotData: widget.groupToAddShotData,
                               index: widget.index,
                               titleString: 'Measure Your Group',
                             )));
