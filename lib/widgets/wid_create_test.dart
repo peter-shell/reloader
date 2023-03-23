@@ -8,11 +8,8 @@ import 'package:measure_group/widgets/wid_view_update_test.dart';
 
 // serves as the create and edit screens for building/editing a cartridge
 // bullet_form -> powder_form -> brass_form -> primer_form -> cartridge_form
-// TODO: handle back button stuff. What happens when user goes backward on creation
-// of objects, what happens when user is updating already created objects
 
-// TODO: form validation!! also control flow through forms
-
+// TODO: form validation!!
 class TestForm extends StatefulWidget {
   TestForm(
       {super.key,
