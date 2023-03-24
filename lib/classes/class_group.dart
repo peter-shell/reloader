@@ -124,8 +124,10 @@ class Group {
     double distanceInInches =
         convertPixelsToInches(greatestDistance, bulletDiameter, iconSize);
     // do some rounding on distanceInInches
+    double plusHalfBulletDiameter = distanceInInches + (bulletDiameter / 2);
+    // TODO: unsure about adding half here. It seems close on the sample, need to do some testing on this soon!
 
-    ctcGroupSize = double.parse(distanceInInches.toStringAsFixed(2));
+    ctcGroupSize = double.parse(plusHalfBulletDiameter.toStringAsFixed(2));
   }
 
   double distanceBetweenTwoPoints(Shot point1, Shot point2) {
