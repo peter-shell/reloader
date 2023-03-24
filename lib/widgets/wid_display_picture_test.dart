@@ -190,7 +190,7 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                                   )));
 
                               widget.groupToAddShotData.iconSize = 50.0 /
-                                  viewerScale; // only need to set this once, it shouldn't change
+                                  viewerScale; // only need to set this once, it shouldn't change (50.0 divided by viewerScale)
                               widget.groupToAddShotData
                                   .addShot(Shot(velocity: 0, xpos: x, ypos: y));
                             });
