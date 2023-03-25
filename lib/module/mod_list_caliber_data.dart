@@ -13,7 +13,7 @@ List<DropdownMenuItem<String>> caliberMenuItems = [
   const DropdownMenuItem(value: ".270", child: Text(".270 / 6.8mm")),
   const DropdownMenuItem(value: ".280", child: Text(".280 / 7mm")),
   const DropdownMenuItem(value: ".308", child: Text(".30 / 7.62mm Depth")),
-  const DropdownMenuItem(value: "3.23", child: Text(".325 / 8mm")),
+  const DropdownMenuItem(value: ".323", child: Text(".325 / 8mm")),
   const DropdownMenuItem(value: ".338", child: Text(".33 / 8.6mm")),
   const DropdownMenuItem(value: ".366", child: Text(".366 / 9.3mm")),
   const DropdownMenuItem(value: ".375", child: Text(".375 / 9.5mm")),

@@ -150,11 +150,28 @@ class Group {
     if (shot.velocity > 1) {
       calculateVelocityStuff();
     }
+    if (shots.length == 1) {
+      ctcGroupSize = bulletDiameter;
+    }
     numShots += 1;
     if (shots.length > 1) {
       calculateGroupSize();
-      print(iconSize);
-      print(ctcGroupSize);
+      // print(iconSize);
+      // print(ctcGroupSize);
+    }
+  }
+
+  void removeShotAtIndex0() {
+    shots.removeAt(0);
+    numShots -= 1;
+    if (shots.length > 1) {
+      calculateGroupSize();
+    }
+    if (shots.length == 1) {
+      ctcGroupSize = bulletDiameter;
+    }
+    if (shots.isEmpty) {
+      ctcGroupSize = 0;
     }
   }
 }

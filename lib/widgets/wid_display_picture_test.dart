@@ -86,6 +86,16 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
     super.initState();
   }
 
+  void removeShot() {
+    if (widget.groupToAddShotData.shots.length == 1) {
+      scaleEnabled = true;
+    }
+    if (widget.groupToAddShotData.shots.isNotEmpty) {
+      myStack.removeLast();
+      widget.groupToAddShotData.removeShotAtIndex0();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double viewerScale = controller.value.getMaxScaleOnAxis();
@@ -152,6 +162,30 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                       Text(
                           "Number Of Shots: ${widget.groupToAddShotData.shots.length}")
                     ]),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: widget.groupToAddShotData.shots.isEmpty
+                        ? null
+                        : () {
+                            setState(() {
+                              removeShot();
+                            });
+                          },
+                    child: Text(
+                      "Back",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: null,
+                      child: Text(
+                        "Finish",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ))
+                ],
               ),
               Align(
                 alignment: Alignment.bottomCenter,
