@@ -1,3 +1,10 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
@@ -25,6 +32,7 @@ class DisplayPictureScreenTest extends StatefulWidget {
   String titleString;
   String? dropDownValue;
   bool fabDisabled = true;
+  String imagesFolder = "test";
 
   @override
   State<DisplayPictureScreenTest> createState() =>
@@ -64,11 +72,50 @@ double getcoordinates(String position) {
   }
 }
 
+// returns a incremented filename for saving images in application dir
+Future<String> generateFileNameForImage(
+    String directory, String imagesFolder) async {
+  int fileCount = 0;
+  // check for dir, create as needed, then count the files in the folder
+  if (Directory("$directory/$imagesFolder/").existsSync() == false) {
+    await Directory("$directory/$imagesFolder/").create(recursive: true);
+    return "GroupImageFile$fileCount";
+  }
+  var wholeDir = Directory("$directory/$imagesFolder/").list();
+
+  await for (final FileSystemEntity f in wholeDir) {
+    if (f is File) {
+      fileCount += 1;
+    }
+  }
+  return "GroupImageFile$fileCount";
+}
+
+// adapted from https://stackoverflow.com/questions/51117958/how-to-take-a-screenshot-of-the-current-widget-flutter
+Future<File> takeScreenShot(String imagesFolder) async {
+  RenderRepaintBoundary boundary = previewContainer.currentContext!
+      .findRenderObject() as RenderRepaintBoundary;
+  ui.Image image = await boundary.toImage(
+      pixelRatio: 2.0); // might need to tweak pixel ratio
+  final directory = (await getApplicationDocumentsDirectory()).path;
+  ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  Uint8List pngBytes = byteData!.buffer.asUint8List();
+  print(pngBytes);
+  Future<String> filename = generateFileNameForImage(directory, imagesFolder);
+  File imgFile = File('$directory/$imagesFolder/$filename.png');
+  imgFile.writeAsBytes(pngBytes);
+  // need to decide what I'm doing here. Should I save and pass a string to file or
+  // pass the file and save later? Thinking it's the latter. Need to keep the operations independent
+  // so it's easy to move to the cloud
+  return imgFile;
+}
+
 var myStack = <Widget>[]; // used to dynamically insert widgets into stack
 GlobalKey imageKey = GlobalKey(); // tied to group image in stack
 GlobalKey iconKey = GlobalKey(); // tied to pink aiming icon
 final controller = TransformationController();
 bool scaleEnabled = true;
+final GlobalKey previewContainer = GlobalKey(); // for screenshots
 
 class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
   @override
@@ -110,21 +157,24 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
             children: [
               Expanded(
                 child: Stack(children: [
-                  InteractiveViewer(
-                    maxScale: 2,
-                    minScale: .5,
-                    scaleEnabled: scaleEnabled,
-                    constrained: true,
-                    boundaryMargin: const EdgeInsets.all(double.infinity),
-                    transformationController: controller,
-                    onInteractionEnd: (details) {
-                      viewerScale = controller.value.getMaxScaleOnAxis();
-                    },
+                  RepaintBoundary(
+                    key: previewContainer,
+                    child: InteractiveViewer(
+                      maxScale: 2,
+                      minScale: .5,
+                      scaleEnabled: scaleEnabled,
+                      constrained: true,
+                      boundaryMargin: const EdgeInsets.all(double.infinity),
+                      transformationController: controller,
+                      onInteractionEnd: (details) {
+                        viewerScale = controller.value.getMaxScaleOnAxis();
+                      },
 
-                    child: Stack(
-                        key: imageKey,
-                        children:
-                            myStack), // myStack initially contains Image Widget
+                      child: Stack(
+                          key: imageKey,
+                          children:
+                              myStack), // myStack initially contains Image Widget
+                    ),
                   ),
                   Align(
                       alignment: const Alignment(0, 0),
@@ -180,7 +230,18 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                     ),
                   ),
                   TextButton(
-                      onPressed: null,
+                      onPressed: widget.groupToAddShotData.shots.isEmpty
+                          ? null
+                          : () {
+                              // screenshot groups
+                              // move to new screen, send photo and DROs
+                              // allow user to move overlay
+                              // crop/pan
+                              // option to export photo to device
+                              // save photo to device, add path to group
+                              // update dros
+                              // move back to origin screen
+                            },
                       child: Text(
                         "Finish",
                         style: TextStyle(fontWeight: FontWeight.bold),

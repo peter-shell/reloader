@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
 import 'package:measure_group/classes/class_group.dart';
-import 'package:measure_group/classes/class_inc_var_test.dart';
 import 'package:measure_group/widgets/wid_display_picture.dart';
 import 'package:measure_group/widgets/wid_display_picture_test.dart';
 

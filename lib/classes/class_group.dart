@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'dart:math';
-
 import 'class_shot.dart';
 
 class Group {
@@ -13,6 +13,7 @@ class Group {
   int numShots;
   double bulletDiameter; // needs set by frontend
   double iconSize; // needs set by frontend
+  String pathToImageOfGroup;
   Group(
       {required this.shots,
       required this.ctcGroupSize,
@@ -23,7 +24,8 @@ class Group {
       required this.standDeviation,
       this.numShots = 0,
       this.bulletDiameter = 0.0,
-      this.iconSize = 0.0});
+      this.iconSize = 0.0,
+      this.pathToImageOfGroup = ""});
 
   factory Group.fromJson(Map<String, dynamic> data) {
     final List<Shot> tempshots = [];
@@ -41,6 +43,7 @@ class Group {
     final numShots = int.parse(data['numShots'] ?? "0");
     final bulletDiameter = double.parse(data['bulletDiameter']);
     final iconSize = double.parse(data['iconSize']);
+    final pathToImageOfGroup = data['pathToImageOfGroup'];
     return Group(
         shots: tempshots,
         ctcGroupSize: ctcGroupSize,
@@ -51,7 +54,8 @@ class Group {
         extremeSpread: extremeSpread,
         numShots: numShots,
         bulletDiameter: bulletDiameter,
-        iconSize: iconSize);
+        iconSize: iconSize,
+        pathToImageOfGroup: pathToImageOfGroup);
   }
   Map<String, dynamic> toJson() => {
         "shots": shots == []
@@ -65,7 +69,8 @@ class Group {
         "extremeSpread": extremeSpread.toStringAsFixed(2),
         "numShots": numShots.toString(),
         "bulletDiameter": bulletDiameter.toStringAsFixed(3),
-        "iconSize": iconSize.toStringAsFixed(2)
+        "iconSize": iconSize.toStringAsFixed(2),
+        "pathToImageOfGroup": pathToImageOfGroup
       };
   void calculateVelocityStuff() {
     double count = 0.0;
@@ -172,6 +177,14 @@ class Group {
     }
     if (shots.isEmpty) {
       ctcGroupSize = 0;
+    }
+  }
+
+  File? returnImageOfGroup() {
+    // could potentially add some error control stuff here; IE: what if no path?
+    // probably better to handle that ourside the DRO
+    if (pathToImageOfGroup != "") {
+      return File(pathToImageOfGroup);
     }
   }
 }
