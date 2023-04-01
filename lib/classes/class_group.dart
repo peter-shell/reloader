@@ -124,9 +124,28 @@ class Group {
       });
       double squareRootMe = meanSum / meanSquaredList.length.toDouble();
       standDeviation = sqrt(squareRootMe);
+
       // calculate extreme spread
       extremeSpread = maxVelocity - minVelocity;
     }
+  }
+
+  // need more than one number in list
+  double calculateStandardDeviation(List<double> listOfDoubles) {
+    double averageOfList = listOfDoubles.average;
+    double meanSum = 0;
+    List<double> meanSquaredList = [];
+    listOfDoubles.forEach((numberFromList) {
+      double squareMe = (numberFromList - averageOfList);
+      meanSquaredList.add(squareMe * squareMe);
+    });
+    meanSquaredList.forEach((squaredNumber) {
+      meanSum += squaredNumber;
+    });
+    double squareRootMe = meanSum / meanSquaredList.length.toDouble();
+    double standardDeviation = sqrt(squareRootMe);
+
+    return double.parse(standardDeviation.toStringAsFixed(2));
   }
 
   void calculateGroupMeanRadius() {

@@ -50,4 +50,7 @@ void main() {
           });
   //mygroup.calculateGroupMeanRadius();
   //print(mygroup.groupMeanRadius);
+  List<double> sdList = [10, 15, 20];
+  double standardDeviation = mygroup.calculateStandardDeviation(sdList);
+  test("standard deviation check", () => {expect(standardDeviation, 4.08)});
 }
