@@ -187,4 +187,8 @@ class Group {
       return File(pathToImageOfGroup);
     }
   }
+
+  //TODO: add vertical and horizontal standard deviation
+  //TODO: add mean radius (litz recommends)
+  //TODO: add circular error probable
 }
