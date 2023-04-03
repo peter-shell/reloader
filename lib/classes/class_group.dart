@@ -18,6 +18,9 @@ class Group {
   String pathToImageOfGroup;
   Shot? centerOfGroup;
   double groupMeanRadius;
+  double standardDeviationX;
+  double standardDeviationY;
+  double radialStandardDeviaiton;
   Group(
       {required this.shots,
       required this.ctcGroupSize,
@@ -31,7 +34,10 @@ class Group {
       this.iconSize = 0.0,
       this.pathToImageOfGroup = "",
       this.centerOfGroup,
-      this.groupMeanRadius = 0});
+      this.groupMeanRadius = 0,
+      this.standardDeviationX = 0,
+      this.standardDeviationY = 0,
+      this.radialStandardDeviaiton = 0});
 
   factory Group.fromJson(Map<String, dynamic> data) {
     final List<Shot> tempshots = [];
@@ -52,6 +58,9 @@ class Group {
     final pathToImageOfGroup = data['pathToImageOfGroup'];
     final centerOfGroup = data['centerOfGroup'];
     final groupMeanRadius = data['groupMeanRadius'];
+    final standardDeviationX = data['standardDeviationX'];
+    final standardDeviationY = data['standardDeviationY'];
+    final radialStandardDeviaiton = data['radialStandardDeviaiton'];
     return Group(
         shots: tempshots,
         ctcGroupSize: ctcGroupSize,
@@ -65,7 +74,10 @@ class Group {
         iconSize: iconSize,
         pathToImageOfGroup: pathToImageOfGroup,
         centerOfGroup: centerOfGroup,
-        groupMeanRadius: groupMeanRadius);
+        groupMeanRadius: groupMeanRadius,
+        standardDeviationX: standardDeviationX,
+        standardDeviationY: standardDeviationY,
+        radialStandardDeviaiton: radialStandardDeviaiton);
   }
   Map<String, dynamic> toJson() => {
         "shots": shots == []
@@ -82,14 +94,17 @@ class Group {
         "iconSize": iconSize.toStringAsFixed(2),
         "pathToImageOfGroup": pathToImageOfGroup,
         "centerOfGroup": centerOfGroup,
-        "groupMeanRadius": groupMeanRadius
+        "groupMeanRadius": groupMeanRadius,
+        "standardDeviationX": standardDeviationX,
+        "standardDeviationY": standardDeviationY,
+        "radialStandardDeviaiton": radialStandardDeviaiton
       };
 
   void calculateVelocityStuff() {
     double count = 0.0;
     double velocitySum = 0.0;
     double meanSum = 0.0;
-    List velocityList = [];
+    List<double> velocityList = [];
     List meanSquaredList = [];
 
     if (shots.isNotEmpty) {
@@ -113,39 +128,77 @@ class Group {
         }
       });
     }
+
     // calculate standard deviation
     if (velocityList.length > 1) {
-      velocityList.forEach((velocity) {
-        double squareMe = (velocity - avgVelocity);
-        meanSquaredList.add(squareMe * squareMe);
-      });
-      meanSquaredList.forEach((velocitySquared) {
-        meanSum += velocitySquared;
-      });
-      double squareRootMe = meanSum / meanSquaredList.length.toDouble();
-      standDeviation = sqrt(squareRootMe);
+      standDeviation = returnStandardDeviation(velocityList);
 
       // calculate extreme spread
       extremeSpread = maxVelocity - minVelocity;
     }
   }
 
-  // need more than one number in list
-  double calculateStandardDeviation(List<double> listOfDoubles) {
-    double averageOfList = listOfDoubles.average;
-    double meanSum = 0;
-    List<double> meanSquaredList = [];
-    listOfDoubles.forEach((numberFromList) {
-      double squareMe = (numberFromList - averageOfList);
-      meanSquaredList.add(squareMe * squareMe);
-    });
-    meanSquaredList.forEach((squaredNumber) {
-      meanSum += squaredNumber;
-    });
-    double squareRootMe = meanSum / meanSquaredList.length.toDouble();
-    double standardDeviation = sqrt(squareRootMe);
+  double calculateStandardDeviationOfX() {
+    List<double> linearNumbers = [];
+    for (int i = 0; i < shots.length; i++) {
+      linearNumbers.add(shots[i].xpos);
+    }
+    double standardDeviation = returnStandardDeviation(linearNumbers);
+    return convertPixelsToInches(standardDeviation, bulletDiameter, iconSize);
+  }
 
-    return double.parse(standardDeviation.toStringAsFixed(2));
+  double calculateStandardDeviationOfY() {
+    List<double> linearNumbers = [];
+    for (int i = 0; i < shots.length; i++) {
+      linearNumbers.add(shots[i].ypos);
+    }
+    double standardDeviation = returnStandardDeviation(linearNumbers);
+    return convertPixelsToInches(standardDeviation, bulletDiameter, iconSize);
+  }
+
+  double calculateRadialStandardDeviation() {
+    if (centerOfGroup != null && shots.length > 1) {
+      setCenterOfGroup();
+    }
+    List<double> distanceFromCenter = getDistancesFromCenter();
+    double radialStandardDeviation =
+        returnStandardDeviation(distanceFromCenter);
+    double rsdInInches = convertPixelsToInches(
+        radialStandardDeviation, bulletDiameter, iconSize);
+
+    return rsdInInches;
+  }
+
+  // need more than one number in list
+  double returnStandardDeviation(List<double> datasetForSDcal) {
+    // σ_r = √[(1/n) * Σ(r_i - r_avg)^2]
+    double averageDistanceFromCenter = datasetForSDcal.average;
+    double multipleBy = 1 / datasetForSDcal.length;
+    double sumOf = 0;
+    double squareMe = 0;
+    datasetForSDcal.forEach((number) {
+      squareMe = number - averageDistanceFromCenter;
+      sumOf += squareMe * squareMe;
+      squareMe = 0; // yes I know...
+    });
+    double almostThere = multipleBy * sumOf;
+    double radialStandardDeviation = sqrt(almostThere);
+    return double.parse(radialStandardDeviation.toStringAsFixed(3));
+  }
+
+  void setCenterOfGroup() {
+    double centerOfX = returnAverageXPosOfShots(returnLowestPointInGroup("x"));
+    double centerOfY = returnAverageYposOfShots(returnLowestPointInGroup("y"));
+    centerOfGroup = Shot(velocity: 0, xpos: centerOfX, ypos: centerOfY);
+  }
+
+  List<double> getDistancesFromCenter() {
+    List<double> shotDistancesFromCenter = [];
+    for (int i = 0; i < shots.length; i++) {
+      shotDistancesFromCenter
+          .add(distanceBetweenTwoPoints(centerOfGroup!, shots[i]));
+    }
+    return shotDistancesFromCenter;
   }
 
   void calculateGroupMeanRadius() {
@@ -158,15 +211,9 @@ class Group {
     //distance of the center from the shot farthest to the left. These two measurements will
     //locate the group center. Now measure the distance of each shot from this center.
     //The average of these measures is the mean radius.
+    setCenterOfGroup();
 
-    double centerOfX = returnAverageXPosOfShots(returnLowestPointInGroup("x"));
-    double centerOfY = returnAverageYposOfShots(returnLowestPointInGroup("y"));
-    centerOfGroup = Shot(velocity: 0, xpos: centerOfX, ypos: centerOfY);
-    List<double> shotDistancesFromCenter = [];
-    for (int i = 0; i < shots.length; i++) {
-      shotDistancesFromCenter
-          .add(distanceBetweenTwoPoints(centerOfGroup!, shots[i]));
-    }
+    List<double> shotDistancesFromCenter = getDistancesFromCenter();
     //print(shotDistancesFromCenter);
     double averageShotDistanceFromCenter = shotDistancesFromCenter.average;
     //print(averageShotDistanceFromCenter);
@@ -249,7 +296,7 @@ class Group {
         convertPixelsToInches(greatestDistance, bulletDiameter, iconSize);
     // do some rounding on distanceInInches
 
-    ctcGroupSize = double.parse(distanceInInches.toStringAsFixed(3));
+    ctcGroupSize = distanceInInches;
   }
 
   double distanceBetweenTwoPoints(Shot point1, Shot point2) {
@@ -259,12 +306,14 @@ class Group {
     return sqrt(a + b);
   }
 
+  // rounds to the third decimal place
   double convertPixelsToInches(double distanceInPixels, double knownMeasure,
       double pixelsOfKnownMeasure) {
     // divide  1  by knownMeasure, then multiple by pixelsOfKnownMeassure for pixels per inch
     // divide distanceInPixels by pixels per inch
     double pixelsPerInch = (1 / knownMeasure) * pixelsOfKnownMeasure;
-    return distanceInPixels / pixelsPerInch;
+    double finalFigure = distanceInPixels / pixelsPerInch;
+    return double.parse(finalFigure.toStringAsFixed(3));
   }
 
   void addShot(Shot shot) {
@@ -278,8 +327,10 @@ class Group {
     numShots += 1;
     if (shots.length > 1) {
       calculateGroupExtremeSpread();
-      // print(iconSize);
-      // print(ctcGroupSize);
+      calculateGroupMeanRadius();
+      standardDeviationX = calculateStandardDeviationOfX();
+      standardDeviationY = calculateStandardDeviationOfY();
+      radialStandardDeviaiton = calculateRadialStandardDeviation();
     }
   }
 
@@ -305,7 +356,19 @@ class Group {
     }
   }
 
-  //TODO: add vertical and horizontal standard deviation
-
   //TODO: add circular error probable
+
+  //TODO: return moa
+  // ballistic-x overlays look like:
+  // distance/# shot group
+  // extreme spread in/moa
+  //width/height in
+  // ATZ: mils
+  // mean radius in/moa
+  // windage in/moa
+  // elevation in/moa
+  // circular error probable
+  // radial standard deviation
+  // vertical standard deviation
+  // horizontal standard deviaiton
 }
