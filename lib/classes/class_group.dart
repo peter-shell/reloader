@@ -370,10 +370,19 @@ class Group {
     numShots += 1;
     if (shots.length > 1) {
       calculateGroupExtremeSpread();
+      moaExtremeSpread = returnMOA(rangeInYards, extremeSpread);
+
       calculateGroupMeanRadius();
+      moaMeanRadius = returnMOA(rangeInYards, groupMeanRadius);
+
       standardDeviationX = calculateStandardDeviationOfX();
+      moaSDx = returnMOA(rangeInYards, standardDeviationX);
+
       standardDeviationY = calculateStandardDeviationOfY();
+      moaSDy = returnMOA(rangeInYards, standardDeviationY);
+
       radialStandardDeviaiton = calculateRadialStandardDeviation();
+      moaSDr = returnMOA(rangeInYards, radialStandardDeviaiton);
       // TODO: add cep, moa for all
     }
   }
