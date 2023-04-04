@@ -27,6 +27,8 @@ class Group {
   double moaSDx;
   double moaSDy;
   double moaSDr;
+  double circleErrorProbable;
+  double moaCep;
 
   Group({
     required this.shots,
@@ -51,6 +53,8 @@ class Group {
     this.moaSDx = 0,
     this.moaSDy = 0,
     this.moaSDr = 0,
+    this.circleErrorProbable = 0,
+    this.moaCep = 0,
   });
 
   factory Group.fromJson(Map<String, dynamic> data) {
@@ -81,6 +85,8 @@ class Group {
     final moaSDx = data['moaSDx'];
     final moaSDy = data['moaSDy'];
     final moaSDr = data['moaSDr'];
+    final circleErrorProbable = data['circleErrorProbable'];
+    final moaCep = data['moaCep'];
 
     return Group(
       shots: tempshots,
@@ -105,6 +111,8 @@ class Group {
       moaSDx: moaSDx,
       moaSDy: moaSDy,
       moaSDr: moaSDr,
+      circleErrorProbable: circleErrorProbable,
+      moaCep: moaCep,
     );
   }
   Map<String, dynamic> toJson() => {
@@ -132,6 +140,8 @@ class Group {
         "moaSDx": moaSDx,
         "moaSDy": moaSDy,
         "moaSDr": moaSDr,
+        "circleErrorProbable": circleErrorProbable,
+        "moaCep": moaCep,
       };
 
   void calculateVelocityStuff() {
@@ -170,6 +180,12 @@ class Group {
       // calculate extreme spread
       extremeSpread = maxVelocity - minVelocity;
     }
+  }
+
+  double retunCircleErrorProbable() {
+    double standardDeviation = calculateRadialStandardDeviation();
+    double cep = standardDeviation * 0.59;
+    return double.parse(cep.toStringAsFixed(3));
   }
 
   double returnMOA(double distancInYards, double groupSizeInInches) {
@@ -368,6 +384,7 @@ class Group {
       ctcGroupSize = bulletDiameter;
     }
     numShots += 1;
+    // where the action happens.
     if (shots.length > 1) {
       calculateGroupExtremeSpread();
       moaExtremeSpread = returnMOA(rangeInYards, extremeSpread);
@@ -383,7 +400,9 @@ class Group {
 
       radialStandardDeviaiton = calculateRadialStandardDeviation();
       moaSDr = returnMOA(rangeInYards, radialStandardDeviaiton);
-      // TODO: add cep, moa for all
+
+      circleErrorProbable = retunCircleErrorProbable();
+      moaCep = returnMOA(rangeInYards, circleErrorProbable);
     }
   }
 
@@ -415,7 +434,8 @@ class Group {
   // ballistic-x overlays look like:
   // distance/# shot group
   // extreme spread in/moa
-  //width/height in
+  //TODO: width/height in
+
   // ATZ: mils
   // mean radius in/moa
   // windage in/moa
