@@ -21,23 +21,37 @@ class Group {
   double standardDeviationX;
   double standardDeviationY;
   double radialStandardDeviaiton;
-  Group(
-      {required this.shots,
-      required this.ctcGroupSize,
-      required this.avgVelocity,
-      required this.extremeSpread,
-      required this.maxVelocity,
-      required this.minVelocity,
-      required this.standDeviation,
-      this.numShots = 0,
-      this.bulletDiameter = 0.0,
-      this.iconSize = 0.0,
-      this.pathToImageOfGroup = "",
-      this.centerOfGroup,
-      this.groupMeanRadius = 0,
-      this.standardDeviationX = 0,
-      this.standardDeviationY = 0,
-      this.radialStandardDeviaiton = 0});
+  double rangeInYards;
+  double moaExtremeSpread;
+  double moaMeanRadius;
+  double moaSDx;
+  double moaSDy;
+  double moaSDr;
+
+  Group({
+    required this.shots,
+    required this.ctcGroupSize,
+    required this.avgVelocity,
+    required this.extremeSpread,
+    required this.maxVelocity,
+    required this.minVelocity,
+    required this.standDeviation,
+    this.numShots = 0,
+    this.bulletDiameter = 0.0,
+    this.iconSize = 0.0,
+    this.pathToImageOfGroup = "",
+    this.centerOfGroup,
+    this.groupMeanRadius = 0,
+    this.standardDeviationX = 0,
+    this.standardDeviationY = 0,
+    this.radialStandardDeviaiton = 0,
+    this.rangeInYards = 0,
+    this.moaExtremeSpread = 0,
+    this.moaMeanRadius = 0,
+    this.moaSDx = 0,
+    this.moaSDy = 0,
+    this.moaSDr = 0,
+  });
 
   factory Group.fromJson(Map<String, dynamic> data) {
     final List<Shot> tempshots = [];
@@ -61,23 +75,37 @@ class Group {
     final standardDeviationX = data['standardDeviationX'];
     final standardDeviationY = data['standardDeviationY'];
     final radialStandardDeviaiton = data['radialStandardDeviaiton'];
+    final rangeInYards = data['rangeInYards'];
+    final moaExtremeSpread = data['moaExtremeSpread'];
+    final moaMeanRadius = data['moaMeanRadius'];
+    final moaSDx = data['moaSDx'];
+    final moaSDy = data['moaSDy'];
+    final moaSDr = data['moaSDr'];
+
     return Group(
-        shots: tempshots,
-        ctcGroupSize: ctcGroupSize,
-        avgVelocity: avgVelocity,
-        minVelocity: minVelocity,
-        maxVelocity: maxVelocity,
-        standDeviation: standDeviation,
-        extremeSpread: extremeSpread,
-        numShots: numShots,
-        bulletDiameter: bulletDiameter,
-        iconSize: iconSize,
-        pathToImageOfGroup: pathToImageOfGroup,
-        centerOfGroup: centerOfGroup,
-        groupMeanRadius: groupMeanRadius,
-        standardDeviationX: standardDeviationX,
-        standardDeviationY: standardDeviationY,
-        radialStandardDeviaiton: radialStandardDeviaiton);
+      shots: tempshots,
+      ctcGroupSize: ctcGroupSize,
+      avgVelocity: avgVelocity,
+      minVelocity: minVelocity,
+      maxVelocity: maxVelocity,
+      standDeviation: standDeviation,
+      extremeSpread: extremeSpread,
+      numShots: numShots,
+      bulletDiameter: bulletDiameter,
+      iconSize: iconSize,
+      pathToImageOfGroup: pathToImageOfGroup,
+      centerOfGroup: centerOfGroup,
+      groupMeanRadius: groupMeanRadius,
+      standardDeviationX: standardDeviationX,
+      standardDeviationY: standardDeviationY,
+      radialStandardDeviaiton: radialStandardDeviaiton,
+      rangeInYards: rangeInYards,
+      moaExtremeSpread: moaExtremeSpread,
+      moaMeanRadius: moaMeanRadius,
+      moaSDx: moaSDx,
+      moaSDy: moaSDy,
+      moaSDr: moaSDr,
+    );
   }
   Map<String, dynamic> toJson() => {
         "shots": shots == []
@@ -97,7 +125,13 @@ class Group {
         "groupMeanRadius": groupMeanRadius,
         "standardDeviationX": standardDeviationX,
         "standardDeviationY": standardDeviationY,
-        "radialStandardDeviaiton": radialStandardDeviaiton
+        "radialStandardDeviaiton": radialStandardDeviaiton,
+        "rangeInYards": rangeInYards,
+        "moaExtremeSpread": moaExtremeSpread,
+        "moaMeanRadius": moaMeanRadius,
+        "moaSDx": moaSDx,
+        "moaSDy": moaSDy,
+        "moaSDr": moaSDr,
       };
 
   void calculateVelocityStuff() {
@@ -136,6 +170,15 @@ class Group {
       // calculate extreme spread
       extremeSpread = maxVelocity - minVelocity;
     }
+  }
+
+  double returnMOA(double distancInYards, double groupSizeInInches) {
+    // calculate how large an MOA is at the given distance,
+    //(range in yards/100 yards) x 1.047 MOA.
+    //Then divide the size of the group in inches by this value.
+    double moaAtDistance = (distancInYards / 100) * 1.047;
+    double moa = groupSizeInInches / moaAtDistance;
+    return double.parse(moa.toStringAsFixed(3));
   }
 
   double calculateStandardDeviationOfX() {
@@ -331,6 +374,7 @@ class Group {
       standardDeviationX = calculateStandardDeviationOfX();
       standardDeviationY = calculateStandardDeviationOfY();
       radialStandardDeviaiton = calculateRadialStandardDeviation();
+      // TODO: add cep, moa for all
     }
   }
 
