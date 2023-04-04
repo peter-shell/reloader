@@ -74,4 +74,6 @@ void main() {
     6.7,
     6.4
   ];
+
+  test("cal moa", () => expect(mygroup.returnMOA(100, 1), 0.955));
 }
