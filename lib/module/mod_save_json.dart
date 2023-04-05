@@ -10,6 +10,5 @@ void writeJson(Map<String, dynamic> dataToWrite) async {
   // print(path);
   String pathToSave = '$path/$fileName';
   final fileToSave = File(pathToSave);
-  //TODO: probably need to de-quote dataToWrite, same for reading
   await fileToSave.writeAsString(json.encode(dataToWrite));
 }

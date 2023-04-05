@@ -16,15 +16,15 @@ import 'package:measure_group/module/mod_list_caliber_data.dart';
 class DisplayPictureScreenTest extends StatefulWidget {
   final String imagePath;
 
-  DisplayPictureScreenTest({
-    super.key,
-    required this.imagePath,
-    required this.loadObjects,
-    required this.fireArmObjects,
-    required this.groupToAddShotData,
-    required this.index,
-    required this.titleString,
-  });
+  DisplayPictureScreenTest(
+      {super.key,
+      required this.imagePath,
+      required this.loadObjects,
+      required this.fireArmObjects,
+      required this.groupToAddShotData,
+      required this.index,
+      required this.titleString,
+      required this.image});
   List<Cartridge> loadObjects;
   List<FireArm> fireArmObjects;
   Group groupToAddShotData;
@@ -33,6 +33,7 @@ class DisplayPictureScreenTest extends StatefulWidget {
   String? dropDownValue;
   bool fabDisabled = true;
   String imagesFolder = "test";
+  Image image;
 
   @override
   State<DisplayPictureScreenTest> createState() =>
@@ -133,16 +134,6 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
     super.initState();
   }
 
-  void removeShot() {
-    if (widget.groupToAddShotData.shots.length == 1) {
-      scaleEnabled = true;
-    }
-    if (widget.groupToAddShotData.shots.isNotEmpty) {
-      myStack.removeLast();
-      widget.groupToAddShotData.removeShotAtIndex0();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double viewerScale = controller.value.getMaxScaleOnAxis();
@@ -217,13 +208,8 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
-                    onPressed: widget.groupToAddShotData.shots.isEmpty
-                        ? null
-                        : () {
-                            setState(() {
-                              removeShot();
-                            });
-                          },
+                    onPressed:
+                        widget.groupToAddShotData.shots.isEmpty ? null : () {},
                     child: const Text(
                       "Back",
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -233,8 +219,6 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                       onPressed: widget.groupToAddShotData.shots.isEmpty
                           ? null
                           : () {
-                              // screenshot groups
-                              // move to new screen, send photo and DROs
                               // allow user to move overlay
                               // crop/pan
                               // option to export photo to device
@@ -265,17 +249,8 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
 
                               double y = getcoordinates("y");
                               // print(x);
-                              //  print(y);
+                              // print(y);
                               myStack.add(Positioned(
-
-                                  // bunch of stuff to add here:
-                                  // select bullet diameter
-                                  // add individual shot to charge/group linker
-                                  // add logic to compute group size as shots are added
-                                  // add dashboard see metrics
-                                  // add button to save photo to user device
-                                  // logic to save on firestore, then add group picture to test card
-                                  // flag for disabling finish button or add to test button
                                   top: y,
                                   left: x,
                                   child: Icon(
@@ -290,7 +265,7 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                                   .addShot(Shot(velocity: 0, xpos: x, ypos: y));
                             });
                           },
-                    child: const Text('Mark'),
+                    child: const Text('Finish'),
                   ),
                 ),
               ),

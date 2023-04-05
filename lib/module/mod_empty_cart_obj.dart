@@ -3,7 +3,6 @@ import 'package:measure_group/classes/class_bullet.dart';
 import 'package:measure_group/classes/class_powder.dart';
 import 'package:measure_group/classes/class_brass.dart';
 import 'package:measure_group/classes/class_primer.dart';
-import 'package:measure_group/classes/class_test.dart';
 
 const String emptyStr = "";
 

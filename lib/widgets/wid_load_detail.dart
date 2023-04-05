@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:measure_group/classes/class_brass.dart';
 import 'package:measure_group/classes/class_inc_var_test.dart';
 import 'package:measure_group/classes/class_note.dart';
-import 'package:measure_group/classes/class_powder.dart';
-import 'package:measure_group/classes/class_primer.dart';
+
 import 'package:measure_group/module/mod_wrap_obj_to_json.dart' as rewrap;
 import 'package:measure_group/module/mod_save_json.dart' as save_json;
 import 'package:measure_group/classes/class_cartridge.dart';
 import 'package:measure_group/classes/class_firearms.dart';
-import 'package:measure_group/classes/class_bullet.dart';
 import 'package:measure_group/widgets/wid_create_test.dart';
 import 'package:measure_group/widgets/wid_note_form.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -101,17 +98,19 @@ class _LoadDetailState extends State<LoadDetail> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TestViewUpdateForm(
-                                    loadObjects: widget.loadObjects,
-                                    fireArmObjects: widget.fireArmObjects,
-                                    emptyTest: widget
-                                        .loadObjects[widget.index].tests[index],
-                                    index: widget.index,
-                                    titleString: "Edit Test",
-                                    disableBackArrow: false)))
-                        .then((value) => setState(() {}));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TestViewUpdateForm(
+                                  loadObjects: widget.loadObjects,
+                                  fireArmObjects: widget.fireArmObjects,
+                                  emptyTest: widget
+                                      .loadObjects[widget.index].tests[index],
+                                  index: widget.index,
+                                  titleString: "Edit Test",
+                                  disableBackArrow: false,
+                                  numJumpsBack: 1,
+                                  testIndex: index,
+                                ))).then((value) => setState(() {}));
                   },
                   child: Card(
                     child: Column(
@@ -128,13 +127,14 @@ class _LoadDetailState extends State<LoadDetail> {
                         Row(
                           children: [
                             Expanded(
-                              child: Text("Best: ${list[index].best}"),
+                              child: Text("Best: ${list[index].smallestGroup}"),
                             ),
                             Expanded(
-                              child: Text("Worst: ${list[index].worst}"),
+                              child: Text("Worst: ${list[index].largestGroup}"),
                             ),
                             Expanded(
-                              child: Text("Average: ${list[index].average}"),
+                              child:
+                                  Text("Average: ${list[index].averageGroup}"),
                             ),
                           ],
                         )
@@ -164,7 +164,7 @@ class _LoadDetailState extends State<LoadDetail> {
     }
 
     Widget bulletInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -219,7 +219,7 @@ class _LoadDetailState extends State<LoadDetail> {
     );
 
     Widget powderInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -256,7 +256,7 @@ class _LoadDetailState extends State<LoadDetail> {
     );
 
     Widget brassInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -293,7 +293,7 @@ class _LoadDetailState extends State<LoadDetail> {
     );
 
     Widget primerInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -330,7 +330,7 @@ class _LoadDetailState extends State<LoadDetail> {
     );
 
     Widget cartridgeInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -395,7 +395,8 @@ class _LoadDetailState extends State<LoadDetail> {
                                         varGroupList: [],
                                         smallestGroup: 0.0,
                                         largestGroup: 0.0,
-                                        averageGroup: 0.0),
+                                        averageGroup: 0.0,
+                                        testType: ""),
                                     index: widget.index,
                                     titleString: "Create Test",
                                     arrow: false)))

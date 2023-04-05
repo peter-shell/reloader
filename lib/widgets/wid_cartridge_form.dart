@@ -68,7 +68,6 @@ class _CartridgeFormState extends State<CartridgeForm> {
                               },
                             ),
                             TextFormField(
-                              // TODO: maybe change this to a dropdown menu?
                               initialValue: widget.blankCartridge.coal,
                               decoration: const InputDecoration(
                                   hintText: "Ex: 2.8",

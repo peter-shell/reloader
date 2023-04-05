@@ -8,11 +8,8 @@ import 'package:measure_group/widgets/wid_view_update_test.dart';
 
 // serves as the create and edit screens for building/editing a cartridge
 // bullet_form -> powder_form -> brass_form -> primer_form -> cartridge_form
-// TODO: handle back button stuff. What happens when user goes backward on creation
-// of objects, what happens when user is updating already created objects
 
-// TODO: form validation!! also control flow through forms
-
+// TODO: form validation!!
 class TestForm extends StatefulWidget {
   TestForm(
       {super.key,
@@ -188,19 +185,24 @@ class _TestFormState extends State<TestForm> {
                               //create groups -> add to tests[]
                               createGroups();
                               widget.loadObjects[widget.index].tests
-                                  .add(widget.emptyTest);
+                                  .insert(0, widget.emptyTest);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: ((context) => TestViewUpdateForm(
-                                          loadObjects: widget.loadObjects,
-                                          fireArmObjects: widget.fireArmObjects,
-                                          emptyTest: widget
-                                              .loadObjects[widget.index]
-                                              .tests[0],
-                                          index: widget.index,
-                                          titleString: "Tests",
-                                          disableBackArrow: false))));
+                                            loadObjects: widget.loadObjects,
+                                            fireArmObjects:
+                                                widget.fireArmObjects,
+                                            emptyTest: widget
+                                                .loadObjects[widget.index]
+                                                .tests[0],
+                                            index: widget.index,
+                                            titleString: "Tests",
+                                            disableBackArrow: false,
+                                            numJumpsBack: 2,
+                                            testIndex:
+                                                0, // seems like there's a better way? why pass this (and the one above) when I could get it on the next screen?
+                                          ))));
                             },
                       style: ElevatedButton.styleFrom(
                           shape: const StadiumBorder()),

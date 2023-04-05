@@ -17,7 +17,6 @@ import 'package:measure_group/module/mod_save_json.dart' as save_json;
 // which cartridge we are messing with. titleString is SE. disabledBackArrow so
 // we can force the user to move through the entire screen; use create screen for
 // updates.
-
 class TestViewUpdateForm extends StatefulWidget {
   TestViewUpdateForm(
       {super.key,
@@ -26,7 +25,9 @@ class TestViewUpdateForm extends StatefulWidget {
       required this.emptyTest,
       required this.index,
       required this.titleString,
-      required this.disableBackArrow});
+      required this.disableBackArrow,
+      required this.numJumpsBack,
+      required this.testIndex});
   List<Cartridge> loadObjects;
   List<FireArm> fireArmObjects;
   IncrementVarTest emptyTest;
@@ -35,6 +36,8 @@ class TestViewUpdateForm extends StatefulWidget {
   bool disableBackArrow;
   //String? dropDownValue;
   bool isButtonDiasabled = false;
+  int numJumpsBack;
+  int testIndex;
 
   @override
   State<TestViewUpdateForm> createState() => _TestViewUpdateFormState();
@@ -50,7 +53,7 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
     super.dispose();
   }
 
-  Future bottomSheet() {
+  Future bottomSheet(int index) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -67,7 +70,11 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                           builder: (context) => TestGroupMeasurer(
                                 loadObjects: widget.loadObjects,
                                 fireArmObjects: widget.fireArmObjects,
-                                emptyTest: widget.emptyTest,
+                                groupToAddShotData: widget
+                                    .loadObjects[widget.index]
+                                    .tests[widget.testIndex]
+                                    .varGroupList[index]
+                                    .group,
                                 index: widget.index,
                               )));
                 },
@@ -97,7 +104,7 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
             trailing: IconButton(
               icon: const Icon(Icons.more_vert),
               onPressed: () {
-                bottomSheet();
+                bottomSheet(index);
               },
             ),
           ),
@@ -272,7 +279,7 @@ class _TestViewUpdateFormState extends State<TestViewUpdateForm> {
                                 // moves back to LoadDetail screen with newly added test
                                 int count = 0;
                                 Navigator.popUntil(context, (route) {
-                                  return count++ == 1;
+                                  return count++ == widget.numJumpsBack;
                                 });
                               },
 
