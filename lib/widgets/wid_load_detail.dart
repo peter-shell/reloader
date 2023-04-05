@@ -164,7 +164,7 @@ class _LoadDetailState extends State<LoadDetail> {
     }
 
     Widget bulletInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -219,7 +219,7 @@ class _LoadDetailState extends State<LoadDetail> {
     );
 
     Widget powderInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -256,7 +256,7 @@ class _LoadDetailState extends State<LoadDetail> {
     );
 
     Widget brassInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -293,7 +293,7 @@ class _LoadDetailState extends State<LoadDetail> {
     );
 
     Widget primerInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -330,7 +330,7 @@ class _LoadDetailState extends State<LoadDetail> {
     );
 
     Widget cartridgeInfo = Card(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

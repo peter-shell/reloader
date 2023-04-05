@@ -100,7 +100,7 @@ Future<File> takeScreenShot(String imagesFolder) async {
   final directory = (await getApplicationDocumentsDirectory()).path;
   ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
   Uint8List pngBytes = byteData!.buffer.asUint8List();
-  print(pngBytes);
+  // print(pngBytes);
   Future<String> filename = generateFileNameForImage(directory, imagesFolder);
   File imgFile = File('$directory/$imagesFolder/$filename.png');
   imgFile.writeAsBytes(pngBytes);
@@ -224,7 +224,7 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                               removeShot();
                             });
                           },
-                    child: Text(
+                    child: const Text(
                       "Back",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -242,7 +242,7 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                               // update dros
                               // move back to origin screen
                             },
-                      child: Text(
+                      child: const Text(
                         "Finish",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ))
@@ -264,8 +264,8 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                               double x = getcoordinates("x");
 
                               double y = getcoordinates("y");
-                              print(x);
-                              print(y);
+                              // print(x);
+                              //  print(y);
                               myStack.add(Positioned(
 
                                   // bunch of stuff to add here:

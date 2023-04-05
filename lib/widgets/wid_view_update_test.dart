@@ -17,7 +17,6 @@ import 'package:measure_group/module/mod_save_json.dart' as save_json;
 // which cartridge we are messing with. titleString is SE. disabledBackArrow so
 // we can force the user to move through the entire screen; use create screen for
 // updates.
-
 class TestViewUpdateForm extends StatefulWidget {
   TestViewUpdateForm(
       {super.key,

@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:measure_group/widgets/wid_load_view.dart';
-// import 'package:measure_group/widgets/wid_load_form.dart';
 import 'package:measure_group/module/mod_unwrap_json_to_obj.dart' as unwrap;
 import 'package:measure_group/module/mod_empty_cart_obj.dart' as empty;
 import 'package:measure_group/widgets/wid_bullet_form.dart';
@@ -88,12 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: FloatingActionButton.extended(
                 label: const Text('New Entry'),
                 onPressed: (() {
-                  // TODO: create blank cartridge object here
-                  // TODO: add to List, send list with index to new LoadForm widget
                   Cartridge blankCartridge = empty.createSingleLoadObj();
                   // loadObjects.add(blankCartridge);
                   // print(blankCartridge.bullet.bulletCaliber);
-                  int loadIndex = loadObjects.length - 1;
 
                   Navigator.push(
                       context,

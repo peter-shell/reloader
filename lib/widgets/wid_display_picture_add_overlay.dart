@@ -210,7 +210,7 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                   TextButton(
                     onPressed:
                         widget.groupToAddShotData.shots.isEmpty ? null : () {},
-                    child: Text(
+                    child: const Text(
                       "Back",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -226,7 +226,7 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                               // update dros
                               // move back to origin screen
                             },
-                      child: Text(
+                      child: const Text(
                         "Finish",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ))
@@ -248,8 +248,8 @@ class _DisplayPictureScreenTestState extends State<DisplayPictureScreenTest> {
                               double x = getcoordinates("x");
 
                               double y = getcoordinates("y");
-                              print(x);
-                              print(y);
+                              // print(x);
+                              // print(y);
                               myStack.add(Positioned(
                                   top: y,
                                   left: x,

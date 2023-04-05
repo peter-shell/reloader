@@ -60,7 +60,6 @@ class _PrimerFormState extends State<PrimerForm> {
                               },
                             ),
                             TextFormField(
-                              //TODO: this could also be a drop down list
                               initialValue:
                                   widget.blankCartridge.primer.primerName,
                               decoration: const InputDecoration(

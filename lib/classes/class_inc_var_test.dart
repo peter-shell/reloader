@@ -1,6 +1,4 @@
-import 'package:measure_group/classes/class_test.dart';
 import 'package:measure_group/classes/class_var_group_linker_test.dart';
-import 'package:collection/collection.dart';
 
 class IncrementVarTest {
   List<VarGroupLinker> varGroupList = [];
