@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:measure_group/classes/class_var_group_linker_test.dart';
 
 class IncrementVarTest {
@@ -51,31 +52,28 @@ class IncrementVarTest {
   }
 
   double calAverage(List<double> groupSizes) {
-    double sum = 0;
-    groupSizes.forEach((e) => sum += e);
-    double fullNum = sum / groupSizes.length;
-    return roundDouble(fullNum, 2);
+    return groupSizes.average;
   }
 
   void smallestAndLargestGroup() {
     List<double> groupSizes = [];
 
-    varGroupList.forEach((linker) {
-      groupSizes.add(linker.group.ctcGroupSize);
+    for (int i = 0; i < varGroupList.length; i++) {
+      groupSizes.add(varGroupList[i].group.ctcGroupSize);
       if (smallestGroup == 0.0) {
-        smallestGroup = linker.group.ctcGroupSize;
+        smallestGroup = varGroupList[i].group.ctcGroupSize;
 
         //largestGroup = linker.group.ctcGroupSize;
       }
       // smallest group
-      if (linker.group.ctcGroupSize < smallestGroup) {
-        smallestGroup = linker.group.ctcGroupSize;
+      if (varGroupList[i].group.ctcGroupSize < smallestGroup) {
+        smallestGroup = varGroupList[i].group.ctcGroupSize;
       }
       // largest
-      if (linker.group.ctcGroupSize > largestGroup) {
-        largestGroup = linker.group.ctcGroupSize;
+      if (varGroupList[i].group.ctcGroupSize > largestGroup) {
+        largestGroup = varGroupList[i].group.ctcGroupSize;
       }
-    });
+    }
     averageGroup = calAverage(groupSizes);
   }
 }
