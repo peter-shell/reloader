@@ -29,6 +29,10 @@ class Group {
   double moaSDr;
   double circleErrorProbable;
   double moaCep;
+  double xHeight;
+  double moaXheight;
+  double yHeight;
+  double moaYheight;
 
   Group({
     required this.shots,
@@ -55,6 +59,10 @@ class Group {
     this.moaSDr = 0,
     this.circleErrorProbable = 0,
     this.moaCep = 0,
+    this.xHeight = 0,
+    this.moaXheight = 0,
+    this.yHeight = 0,
+    this.moaYheight = 0,
   });
 
   factory Group.fromJson(Map<String, dynamic> data) {
@@ -87,6 +95,10 @@ class Group {
     final moaSDr = data['moaSDr'];
     final circleErrorProbable = data['circleErrorProbable'];
     final moaCep = data['moaCep'];
+    final xHeight = data['xHeight'];
+    final moaXheight = data['moaXheight'];
+    final yHeight = data['yHeight'];
+    final moaYheight = data['moaYheight'];
 
     return Group(
       shots: tempshots,
@@ -113,6 +125,10 @@ class Group {
       moaSDr: moaSDr,
       circleErrorProbable: circleErrorProbable,
       moaCep: moaCep,
+      xHeight: xHeight,
+      moaXheight: moaXheight,
+      yHeight: yHeight,
+      moaYheight: moaYheight,
     );
   }
   Map<String, dynamic> toJson() => {
@@ -142,14 +158,16 @@ class Group {
         "moaSDr": moaSDr,
         "circleErrorProbable": circleErrorProbable,
         "moaCep": moaCep,
+        "xHeight": xHeight,
+        "moaXheight": moaXheight,
+        "yHeight": yHeight,
+        "moaYheight": moaYheight,
       };
 
   void calculateVelocityStuff() {
     double count = 0.0;
     double velocitySum = 0.0;
-    double meanSum = 0.0;
     List<double> velocityList = [];
-    List meanSquaredList = [];
 
     if (shots.isNotEmpty) {
       shots.forEach((shot) {
@@ -180,6 +198,54 @@ class Group {
       // calculate extreme spread
       extremeSpread = maxVelocity - minVelocity;
     }
+  }
+
+  // returns "height" of y coordinate plane group in inches, precision of 3
+  double returnFurthestPointInY() {
+    double lowestPoint = shots[returnLowestPointInGroup("y")].ypos;
+    double highestPoint = shots[getHeightY()].ypos;
+    return getDistanceInInches(lowestPoint, highestPoint);
+  }
+
+  // returns "height" of x coordinate plane group in inches, precision of 3
+  double returnFurthestPointInX() {
+    double lowestPoint = shots[returnLowestPointInGroup("x")].xpos;
+    double highestPoint = shots[getHeightInX()].xpos;
+    return getDistanceInInches(lowestPoint, highestPoint);
+  }
+
+  //helper function for returnFurthestPointInY and returnFurthestPointInX
+  // returns furthest point, independant of plane, that's in inches and rounded
+  double getDistanceInInches(double startPoint, double endPoint) {
+    double distanceInPixels = endPoint - startPoint;
+
+    return convertPixelsToInches(distanceInPixels, bulletDiameter, iconSize);
+  }
+
+  // helper for returnFurthestPointInY
+  // returns index of shot.obj with furthest point in Y coordinate plane
+  int getHeightY() {
+    int highestPoint = 0;
+
+    for (int i = 1; i < shots.length; i++) {
+      if (shots[i].ypos > shots[highestPoint].ypos) {
+        highestPoint = i;
+      }
+    }
+    return highestPoint;
+  }
+
+  // helper function for returnFurthestPointInX
+  // returns index of shot.obj with furthest point in X coordinate plane
+  int getHeightInX() {
+    int highestPoint = 0;
+
+    for (int i = 1; i < shots.length; i++) {
+      if (shots[i].xpos > shots[highestPoint].xpos) {
+        highestPoint = i;
+      }
+    }
+    return highestPoint;
   }
 
   double retunCircleErrorProbable() {
@@ -260,7 +326,7 @@ class Group {
     return shotDistancesFromCenter;
   }
 
-  void calculateGroupMeanRadius() {
+  double returnGroupMeanRadius() {
     // mean radius (litz recommends)
     // find the mathematical center of the group you shot. Then you measure the distance of
     //each individual shot from the mathematical center and average those distances together.
@@ -280,7 +346,7 @@ class Group {
     double meanRadius = convertPixelsToInches(
         averageShotDistanceFromCenter, bulletDiameter, iconSize);
     //print(meanRadius);
-    groupMeanRadius = double.parse(meanRadius.toStringAsFixed(3));
+    return double.parse(meanRadius.toStringAsFixed(3));
   }
 
   double returnAverageXPosOfShots(int indexOfLowestPosition) {
@@ -341,7 +407,7 @@ class Group {
     }
   }
 
-  void calculateGroupExtremeSpread() {
+  double calculateGroupExtremeSpread() {
     // the parameter bulletDiameter is probably just temporary
     double greatestDistance = 0;
     for (int i = 0; i < shots.length; i++) {
@@ -355,7 +421,7 @@ class Group {
         convertPixelsToInches(greatestDistance, bulletDiameter, iconSize);
     // do some rounding on distanceInInches
 
-    ctcGroupSize = distanceInInches;
+    return distanceInInches;
   }
 
   double distanceBetweenTwoPoints(Shot point1, Shot point2) {
@@ -386,10 +452,10 @@ class Group {
     numShots += 1;
     // where the action happens.
     if (shots.length > 1) {
-      calculateGroupExtremeSpread();
+      ctcGroupSize = calculateGroupExtremeSpread();
       moaExtremeSpread = returnMOA(rangeInYards, extremeSpread);
 
-      calculateGroupMeanRadius();
+      groupMeanRadius = returnGroupMeanRadius();
       moaMeanRadius = returnMOA(rangeInYards, groupMeanRadius);
 
       standardDeviationX = calculateStandardDeviationOfX();
@@ -403,6 +469,12 @@ class Group {
 
       circleErrorProbable = retunCircleErrorProbable();
       moaCep = returnMOA(rangeInYards, circleErrorProbable);
+
+      xHeight = returnFurthestPointInX();
+      moaXheight = returnMOA(rangeInYards, xHeight);
+
+      yHeight = returnFurthestPointInY();
+      moaYheight = returnMOA(rangeInYards, yHeight);
     }
   }
 
@@ -428,9 +500,6 @@ class Group {
     }
   }
 
-  //TODO: add circular error probable
-
-  //TODO: return moa
   // ballistic-x overlays look like:
   // distance/# shot group
   // extreme spread in/moa
