@@ -497,12 +497,12 @@ class Group {
     if (pathToImageOfGroup != "") {
       return File(pathToImageOfGroup);
     }
+    throw "there's no file here!!!";
   }
 
   // ballistic-x overlays look like:
   // distance/# shot group
   // extreme spread in/moa
-  //TODO: width/height in
 
   // ATZ: mils
   // mean radius in/moa
