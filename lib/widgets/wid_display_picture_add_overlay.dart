@@ -101,7 +101,7 @@ Future<File> takeScreenShot(String imagesFolder) async {
   final directory = (await getApplicationDocumentsDirectory()).path;
   ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
   Uint8List pngBytes = byteData!.buffer.asUint8List();
-  print(pngBytes);
+  // print(pngBytes);
   Future<String> filename = generateFileNameForImage(directory, imagesFolder);
   File imgFile = File('$directory/$imagesFolder/$filename.png');
   imgFile.writeAsBytes(pngBytes);

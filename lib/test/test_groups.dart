@@ -62,18 +62,18 @@ void main() {
   //           expect(
   //               mygroup.calculateRadialStandardDeviation(0.157, 0.101), 0.146)
   //         });
-  List<double> distanceFromCenter = [
-    5.2,
-    6.1,
-    7.2,
-    5.8,
-    6.5,
-    7.1,
-    5.9,
-    7.3,
-    6.7,
-    6.4
-  ];
+  // List<double> distanceFromCenter = [
+  //   5.2,
+  //   6.1,
+  //   7.2,
+  //   5.8,
+  //   6.5,
+  //   7.1,
+  //   5.9,
+  //   7.3,
+  //   6.7,
+  //   6.4
+  // ];
 
   test("cal moa", () => expect(mygroup.returnMOA(100, 1), 0.955));
 }

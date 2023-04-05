@@ -35,7 +35,7 @@ void main() {
   secondGroup.addShot(Shot(velocity: 2780, xpos: 0, ypos: 0));
   secondGroup.addShot(Shot(velocity: 2755, xpos: 0, ypos: 0));
   secondGroup.ctcGroupSize = .4;
-  print("Second group: ${secondGroup.ctcGroupSize}");
+  //print("Second group: ${secondGroup.ctcGroupSize}");
   myTest.addGroup(VarGroupLinker(chargeWeight: 40.5, group: firstGroup));
   myTest.addGroup(VarGroupLinker(chargeWeight: 40.8, group: secondGroup));
 

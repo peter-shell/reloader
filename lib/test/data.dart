@@ -1,4 +1,4 @@
-var test_data = {
+var testData = {
   "loads": [
     {
       "caliber": "6.5 Creedmoor",

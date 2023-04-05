@@ -3,7 +3,7 @@ import 'package:measure_group/classes/class_firearms.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final test_data = {
+  final testData = {
     "fireArms": [
       {
         "make": "American Rifle Company",
@@ -25,7 +25,8 @@ void main() {
     ]
   };
   List objectList = [];
-  test_data['fireArms']!.forEach(
+
+  testData['fireArms']!.forEach(
     (fireArm) {
       objectList.add(FireArm.fromJson(fireArm));
     },
