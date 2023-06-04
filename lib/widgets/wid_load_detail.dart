@@ -378,36 +378,26 @@ class _LoadDetailState extends State<LoadDetail> {
       ]),
     );
 
-    Widget addTest = Card(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TestForm(
-                                    loadObjects: widget.loadObjects,
-                                    fireArmObjects: widget.fireArmObjects,
-                                    emptyTest: IncrementVarTest(
-                                        varGroupList: [],
-                                        smallestGroup: 0.0,
-                                        largestGroup: 0.0,
-                                        averageGroup: 0.0,
-                                        testType: ""),
-                                    index: widget.index,
-                                    titleString: "Create Test",
-                                    arrow: false)))
-                        .then((value) => setState(() {}));
-                  },
-                  child: const Text("Add Test"))
-            ],
-          )
-        ],
-      ),
-    );
+    Widget addTest = ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TestForm(
+                      loadObjects: widget.loadObjects,
+                      fireArmObjects: widget.fireArmObjects,
+                      emptyTest: IncrementVarTest(
+                          varGroupList: [],
+                          smallestGroup: 0.0,
+                          largestGroup: 0.0,
+                          averageGroup: 0.0,
+                          testType: ""),
+                      index: widget.index,
+                      titleString: "Create Test",
+                      arrow: false))).then((value) => setState(() {}));
+        },
+        style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+        child: const Text("Add Test"));
 
     Widget allTests =
         Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -422,17 +412,21 @@ class _LoadDetailState extends State<LoadDetail> {
       brassInfo,
       primerInfo,
       cartridgeInfo,
-      addTest,
       allTests
     ];
 
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.loadObjects[widget.index].bullet.bulletCaliber)),
-      body: Column(
-        children: [
-          Expanded(child: ListView(primary: true, children: listViewChildren)),
-        ],
+      body: Container(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+        child: Column(
+          children: [
+            Expanded(
+                child: ListView(primary: true, children: listViewChildren)),
+            addTest
+          ],
+        ),
       ),
     );
   }
