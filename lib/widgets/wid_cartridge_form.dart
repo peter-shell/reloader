@@ -73,7 +73,7 @@ class _CartridgeFormState extends State<CartridgeForm> {
                                   hintText: "Ex: 2.8",
                                   labelText: "Cartridge Over All Length"),
                               onChanged: (value) {
-                                widget.blankCartridge.trimLength = value;
+                                widget.blankCartridge.coal = value;
                               },
                             ),
                             TextFormField(

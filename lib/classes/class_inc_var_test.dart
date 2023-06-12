@@ -52,7 +52,7 @@ class IncrementVarTest {
   }
 
   double calAverage(List<double> groupSizes) {
-    return groupSizes.average;
+    return roundDouble(groupSizes.average, 2);
   }
 
   void smallestAndLargestGroup() {

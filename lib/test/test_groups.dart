@@ -23,18 +23,9 @@ void main() {
       standDeviation: 0);
   mygroup.bulletDiameter = .264;
   mygroup.iconSize = 50;
-  myShots.forEach((shot) => {
-        mygroup.addShot(shot),
-
-        // print(
-        //     "avg x pos: ${mygroup.returnAverageXPosOfShots(mygroup.returnLowestPointInGroup("x"))}"),
-        //print(mygroup.ctcGroupSize.toString())
-        // print("Average Velocity: ${mygroup.avgVelocity}"),
-        // print("Standard Deviation: ${mygroup.standDeviation}"),
-        // print("Extreme Spread ${mygroup.extremeSpread}"),
-        // print("Max Velocity: ${mygroup.maxVelocity}"),
-        // print("Min Velocity: ${mygroup.minVelocity}"),
-      });
+  myShots.forEach(
+    (shot) => mygroup.addShot(shot),
+  );
   test("All shot objects were added", () => {expect(mygroup.shots.length, 5)});
   test("first shot is correct speed",
       () => {expect(mygroup.shots[0].velocity, 2700.0)});
