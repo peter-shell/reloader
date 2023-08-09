@@ -23,9 +23,9 @@ void main() {
       standDeviation: 0);
   mygroup.bulletDiameter = .264;
   mygroup.iconSize = 50;
-  myShots.forEach(
-    (shot) => mygroup.addShot(shot),
-  );
+  for (var shot in myShots) {
+    mygroup.addShot(shot);
+  }
   test("All shot objects were added", () => {expect(mygroup.shots.length, 5)});
   test("first shot is correct speed",
       () => {expect(mygroup.shots[0].velocity, 2700.0)});

@@ -28,17 +28,17 @@ void main() {
 
   test('verifies mulitple notes were constructed', (() {
     List objectList = [];
-    testData['notes']!.forEach((note) {
+    for (var note in testData['notes']!) {
       objectList.add(Note.fromJson(note));
-    });
+    }
     expect(objectList.length, 2);
   }));
 
   test('checks property for object2', (() {
     List objectList = [];
-    testData['notes']!.forEach((note) {
+    for (var note in testData['notes']!) {
       objectList.add(Note.fromJson(note));
-    });
+    }
     expect(objectList[1].note, "Another note");
   }));
 

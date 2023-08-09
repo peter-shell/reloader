@@ -26,11 +26,9 @@ void main() {
   };
   List objectList = [];
 
-  testData['fireArms']!.forEach(
-    (fireArm) {
+  for (var fireArm in testData['fireArms']!) {
       objectList.add(FireArm.fromJson(fireArm));
-    },
-  );
+    }
   test('did all objects get built?', (() {
     // todo
     expect(objectList.length, 2);

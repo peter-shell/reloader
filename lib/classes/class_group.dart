@@ -169,7 +169,7 @@ class Group {
     List<double> velocityList = [];
 
     if (shots.isNotEmpty) {
-      shots.forEach((shot) {
+      for (var shot in shots) {
         if (shot.velocity > 0.0) {
           // below comparison is needed as min velocity initialized at 0
           if (count == 0.0) {
@@ -187,7 +187,7 @@ class Group {
           }
           velocityList.add(shot.velocity);
         }
-      });
+      }
     }
 
     // calculate standard deviation
@@ -300,11 +300,11 @@ class Group {
     double multipleBy = 1 / datasetForSDcal.length;
     double sumOf = 0;
     double squareMe = 0;
-    datasetForSDcal.forEach((number) {
+    for (var number in datasetForSDcal) {
       squareMe = number - averageDistanceFromCenter;
       sumOf += squareMe * squareMe;
       squareMe = 0; // yes I know...
-    });
+    }
     double almostThere = multipleBy * sumOf;
     double radialStandardDeviation = sqrt(almostThere);
     return double.parse(radialStandardDeviation.toStringAsFixed(3));

@@ -30,7 +30,7 @@ class _LoadsViewState extends State<LoadsView> {
                 itemBuilder: (context, index) {
                   return Slidable(
                     endActionPane: ActionPane(
-                      motion: ScrollMotion(),
+                      motion: const ScrollMotion(),
                       children: [
                         SlidableAction(
                           onPressed: ((context) {
